@@ -91,7 +91,7 @@ the newest release, pick the file for your device:
 
 | Your device | File to download | Works on |
 | --- | --- | --- |
-| 🐧 Linux computer | `Vidya-<version>-linux-x64.tar.gz` | Ubuntu 24.04, Fedora, Arch and similar (Intel/AMD 64-bit) |
+| 🐧 Linux computer | `Vidya-<version>-linux-x64.tar.gz` | Ubuntu 24.04, Fedora, Arch and similar (64-bit x86) |
 | 🪟 Windows computer | `Vidya-<version>-windows-x64-setup.exe` | Windows 10 and 11 |
 | 🤖 Android phone | `Vidya-<version>-android.apk` | Android 7 and newer |
 
@@ -132,7 +132,7 @@ Prefer no installer? Download `…-windows-x64-portable.zip`, unzip it anywhere 
 
 1. Open the downloaded `.apk` on your phone.
 2. If Android asks, allow installs from your browser or file manager. This is normal for apps
-   from outside the Play Store.
+   from outside an app store.
 3. Tap **Install**, then **Open**.
 
 Newer versions install over the top and keep your data.
