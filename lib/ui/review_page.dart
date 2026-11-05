@@ -12,6 +12,7 @@ import '../db/database.dart';
 import '../domain/answer.dart';
 import '../domain/cloze.dart';
 import '../domain/export.dart';
+import '../domain/import.dart';
 import '../domain/review.dart';
 import '../domain/stats.dart';
 import 'charts.dart';
@@ -27,6 +28,12 @@ class ReviewPage extends ConsumerWidget {
     title: 'Review',
     banner: 'page.review',
     actions: [
+      HintIconButton(
+        'action.importDecks',
+        icon: Icons.file_open_outlined,
+        label: 'Import cards',
+        onPressed: () => _importCards(context, ref),
+      ),
       HintIconButton(
         'action.exportDecks',
         icon: Icons.ios_share,
@@ -47,6 +54,30 @@ class ReviewPage extends ConsumerWidget {
   );
 }
 
+/// Adds cards from a CSV, tab-separated (Quizlet, Anki text) or Vidya file.
+Future<void> _importCards(BuildContext context, WidgetRef ref) async {
+  final file = await FilePicker.pickFile(
+    dialogTitle: 'Import cards',
+    type: FileType.custom,
+    allowedExtensions: const ['csv', 'tsv', 'txt', 'json', 'apkg'],
+  );
+  if (file == null || !context.mounted) return;
+  try {
+    final bytes = await file.readAsBytes();
+    final r = parseDeckFile(file.name, bytes);
+    final added = await ref.mutate((s) => s.book.importCards(r.cards, today: today()));
+    if (!context.mounted) return;
+    final dupes = r.cards.length - added;
+    showMessage(
+      context,
+      '$added ${added == 1 ? 'card' : 'cards'} imported'
+      '${dupes > 0 ? ', $dupes already here' : ''}${r.skipped > 0 ? ', ${r.skipped} skipped (missing a side)' : ''}.',
+    );
+  } on FormatException catch (e) {
+    if (context.mounted) showMessage(context, e.message);
+  }
+}
+
 /// Saves every card to a JSON file the learner picks the place for.
 Future<void> _exportCards(BuildContext context, WidgetRef ref) async {
   final cards = (await ref.read(statsProvider.future)).cards;
@@ -59,7 +90,10 @@ Future<void> _exportCards(BuildContext context, WidgetRef ref) async {
     mimeType: 'application/json',
   );
   if (saved != null && context.mounted) {
-    showMessage(context, '${cards.length} ${cards.length == 1 ? 'card' : 'cards'} exported. Local images and audio stay on this device.');
+    showMessage(
+      context,
+      '${cards.length} ${cards.length == 1 ? 'card' : 'cards'} exported. Local images and audio stay on this device.',
+    );
   }
 }
 
@@ -282,7 +316,9 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
   /// Reveals the back; if an answer was typed, says whether it matches.
   void _reveal(Flashcard c) => setState(() {
     _shown = true;
-    _matched = _typed.text.trim().isEmpty ? null : answerMatches(_typed.text, isCloze(c.front) ? clozeAnswers(c.front).join(' / ') : c.back);
+    _matched = _typed.text.trim().isEmpty
+        ? null
+        : answerMatches(_typed.text, isCloze(c.front) ? clozeAnswers(c.front).join(' / ') : c.back);
   });
 
   @override
@@ -396,7 +432,8 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                                               ),
                                             ),
                                           ),
-                                        if (card.back.isNotEmpty) SelectableText(card.back, style: t.titleMedium),
+                                        if (card.back.isNotEmpty)
+                                          SelectableText(card.back, style: t.titleMedium),
                                       ],
                                     ],
                                   ),

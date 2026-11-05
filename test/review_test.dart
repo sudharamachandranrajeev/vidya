@@ -8,6 +8,7 @@ import 'package:vidya/db/database.dart';
 import 'package:vidya/domain/book.dart';
 import 'package:vidya/domain/cloze.dart';
 import 'package:vidya/domain/export.dart';
+import 'package:vidya/domain/import.dart';
 import 'package:vidya/domain/review.dart';
 import 'package:vidya/domain/stats.dart';
 
@@ -164,7 +165,11 @@ void main() {
     test('decksJson shares text, deck and media but no schedule', () async {
       await book.saveCard('B?', 'b', today: today, deck: 'Z', image: 'https://x/y.png');
       await book.saveCard('A?', 'a', today: today, deck: 'A');
-      await book.reviewCard(await book.db.select(book.db.learnCards).get().then((l) => l.first), Grade.good, today: today);
+      await book.reviewCard(
+        await book.db.select(book.db.learnCards).get().then((l) => l.first),
+        Grade.good,
+        today: today,
+      );
       final j = jsonDecode(decksJson((await book.stats(today)).cards)) as Map<String, dynamic>;
       expect((j['format'], j['version']), ('vidya-decks', 1));
       final cards = (j['cards'] as List).cast<Map<String, dynamic>>();
@@ -172,6 +177,50 @@ void main() {
       expect(cards[1]['image'], 'https://x/y.png');
       expect(cards[0].containsKey('image'), isFalse);
       expect(cards.expand((c) => c.keys).toSet(), {'deck', 'front', 'back', 'image'});
+    });
+  });
+
+  group('import', () {
+    List<int> b(String s) => utf8.encode(s);
+
+    test('Quizlet tab export: term and definition, quoted multi-line fields', () {
+      final r = parseDeckFile('q.txt', b('Hola\tHello\n"Adi\nos"\t"Good ""bye"""\n\nlonely\t\n'));
+      expect(r.cards.map((c) => (c.front, c.back)), [('Hola', 'Hello'), ('Adi\nos', 'Good "bye"')]);
+      expect((r.skipped, r.cards.first.deck), (1, 'Imported'));
+    });
+
+    test('CSV with header names columns, incl. deck, media and cloze without back', () {
+      final r = parseDeckFile(
+        'a.csv',
+        b('﻿Question,Answer,Deck,Image\r\nQ1,A1,Bio,https://x/y.png\r\nCapital is {{c1::Paris}},,Geo,\r\n'),
+      );
+      expect(r.cards[0], (front: 'Q1', back: 'A1', deck: 'Bio', image: 'https://x/y.png', audio: ''));
+      expect(r.cards[1].deck, 'Geo');
+      expect(isCloze(r.cards[1].front), isTrue);
+    });
+
+    test('Anki plain-text export skips # lines; vidya json round-trips', () async {
+      expect(parseDeckFile('n.txt', b('#separator:tab\n#html:false\nF\tB\ttag\n')).cards.single.back, 'B');
+      await book.saveCard('J?', 'j', today: today, deck: 'D', audio: 'https://x/a.mp3');
+      final r = parseDeckFile('d.json', b(decksJson((await book.stats(today)).cards)));
+      expect(r.cards.single, (front: 'J?', back: 'j', deck: 'D', image: '', audio: 'https://x/a.mp3'));
+    });
+
+    test('.apkg and bad files give a clear message', () {
+      expect(
+        () => parseDeckFile('x.apkg', [80, 75]),
+        throwsA(isA<FormatException>().having((e) => e.message, 'm', contains('not yet supported'))),
+      );
+      expect(() => parseDeckFile('x.csv', b('')), throwsFormatException);
+      expect(() => parseDeckFile('x.json', b('{"a":1}')), throwsFormatException);
+    });
+
+    test('importCards adds new due cards once; a second import adds nothing', () async {
+      final cards = parseDeckFile('a.csv', b('front,back\nQ,A\nQ2,A2\n')).cards;
+      expect(await book.importCards(cards, today: today), 2);
+      expect(await book.importCards(cards, today: today), 0);
+      final all = await book.db.select(book.db.learnCards).get();
+      expect(all.map((c) => (c.deck, c.due)).toSet(), {('Imported', today)});
     });
   });
 }

@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 
 import '../db/database.dart';
 import 'achievements.dart';
+import 'import.dart';
 import 'review.dart';
 import 'stats.dart';
 import 'templates.dart';
@@ -343,6 +344,23 @@ class LearningBook {
       id,
     );
   }
+
+  /// Adds imported cards as new cards due today, leaving out any whose deck
+  /// and front already exist (so importing a file twice changes nothing).
+  /// Returns how many were added.
+  Future<int> importCards(List<ImportedCard> cards, {required String today}) => db.transaction(() async {
+    final seen = {
+      for (final c in await (db.select(db.learnCards)..where((r) => r.deleted.not())).get())
+        '${c.deck} ${c.front}',
+    };
+    var added = 0;
+    for (final c in cards) {
+      if (!seen.add('${c.deck} ${c.front}')) continue;
+      await saveCard(c.front, c.back, today: today, deck: c.deck, image: c.image, audio: c.audio);
+      added++;
+    }
+    return added;
+  });
 
   /// Records a review and moves the card to its next due day.
   Future<void> reviewCard(Flashcard c, Grade g, {required String today}) => db.transaction(() async {
