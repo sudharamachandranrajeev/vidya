@@ -118,6 +118,11 @@ class LearnCards extends Table with SyncedRow {
   TextColumn get deck => text().withDefault(const Constant('General'))();
   TextColumn get courseId => text().nullable()();
 
+  /// Optional media, each a web address or a file path on this device. A
+  /// cloze card hides `{{c1::answer}}` spans in [front] instead of using [back].
+  TextColumn get image => text().withDefault(const Constant(''))();
+  TextColumn get audio => text().withDefault(const Constant(''))();
+
   /// The day it is next shown.
   TextColumn get due => text()();
 

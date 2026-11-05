@@ -5,6 +5,7 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vidya/db/database.dart';
 import 'package:vidya/domain/book.dart';
+import 'package:vidya/domain/cloze.dart';
 import 'package:vidya/domain/export.dart';
 import 'package:vidya/domain/review.dart';
 import 'package:vidya/domain/stats.dart';
@@ -118,5 +119,43 @@ void main() {
     expect(s.cards, hasLength(1));
     await db.close();
     await dir.delete(recursive: true);
+  });
+
+  test('a version 2 database gains card media columns and keeps its cards', () async {
+    final dir = await Directory.systemTemp.createTemp('vidya');
+    final file = File('${dir.path}/v2.db');
+    var db = AppDatabase(NativeDatabase(file));
+    await LearningBook(await Store.open(db)).saveCard('Q', 'A', today: today);
+    await db.customStatement('ALTER TABLE learn_cards DROP COLUMN image');
+    await db.customStatement('ALTER TABLE learn_cards DROP COLUMN audio');
+    await db.customStatement('PRAGMA user_version = 2');
+    await db.close();
+
+    db = AppDatabase(NativeDatabase(file));
+    final upgraded = LearningBook(await Store.open(db));
+    final c = (await upgraded.stats(today)).cards.single;
+    expect((c.front, c.image, c.audio), ('Q', '', ''));
+    await db.close();
+    await dir.delete(recursive: true);
+  });
+
+  group('media and cloze', () {
+    test('image and audio are saved and edited with the card', () async {
+      await book.saveCard('Q', 'A', today: today, image: 'https://x/y.png', audio: '/a.mp3');
+      var c = await card();
+      expect((c.image, c.audio), ('https://x/y.png', '/a.mp3'));
+      await book.saveCard('Q', 'A', today: today, existing: c);
+      c = await card();
+      expect((c.image, c.audio), ('', ''));
+    });
+
+    test('cloze spans hide and reveal, with an optional hint', () {
+      const f = 'The capital of {{c1::France::country}} is {{c2::Paris}}.';
+      expect(isCloze(f), isTrue);
+      expect(isCloze('plain'), isFalse);
+      expect(clozeQuestion(f), 'The capital of [country] is […].');
+      expect(clozeAnswer(f), 'The capital of France is Paris.');
+      expect(clozeAnswers(f), ['France', 'Paris']);
+    });
   });
 }

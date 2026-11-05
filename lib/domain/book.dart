@@ -308,13 +308,22 @@ class LearningBook {
     required String today,
     String deck = 'General',
     String? courseId,
+    String image = '',
+    String audio = '',
     Flashcard? existing,
   }) {
     final id = existing?.id ?? newId();
     if (existing != null) {
       return save(
         db.learnCards,
-        existing.copyWith(front: front, back: back, deck: deck, courseId: Value(courseId)),
+        existing.copyWith(
+          front: front,
+          back: back,
+          deck: deck,
+          courseId: Value(courseId),
+          image: image,
+          audio: audio,
+        ),
         id,
       );
     }
@@ -326,6 +335,8 @@ class LearningBook {
         back: back,
         deck: Value(deck),
         courseId: Value(courseId),
+        image: Value(image),
+        audio: Value(audio),
         due: today,
         created: today,
       ),

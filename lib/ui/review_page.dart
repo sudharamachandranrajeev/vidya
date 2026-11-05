@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:brahma_core/brahma_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../app/providers.dart';
 import '../db/database.dart';
 import '../domain/answer.dart';
+import '../domain/cloze.dart';
 import '../domain/review.dart';
 import '../domain/stats.dart';
 import 'charts.dart';
@@ -179,18 +182,30 @@ Future<void> cardDialog(BuildContext context, WidgetRef ref, {Flashcard? card}) 
   if (!context.mounted) return;
   final front = TextEditingController(text: card?.front),
       back = TextEditingController(text: card?.back),
+      image = TextEditingController(text: card?.image),
+      audio = TextEditingController(text: card?.audio),
       deck = TextEditingController(text: card?.deck ?? 'General');
   final decks = {for (final c in cards) c.deck}.toList()..sort();
   await showFormDialog(
     context,
     title: card == null ? 'New card' : 'Edit card',
     fields: (setState) => [
-      Field(front, 'Front: the question', lines: 2, autofocus: true),
-      Field(back, 'Back: the answer', lines: 3),
+      Field(
+        front,
+        'Front: the question',
+        lines: 2,
+        autofocus: true,
+        hint: 'Or hide words: The capital of France is {{c1::Paris}}',
+      ),
+      Field(back, 'Back: the answer', lines: 3, hint: 'Optional when the front hides words'),
+      Field(image, 'Image', hint: 'Web address or file path'),
+      Field(audio, 'Audio', hint: 'Web address or file path'),
       Field(deck, 'Deck', hint: decks.isEmpty ? null : decks.join(', ')),
     ],
     onSave: () async {
-      if (front.text.trim().isEmpty || back.text.trim().isEmpty) return 'Fill in both sides.';
+      if (front.text.trim().isEmpty || (back.text.trim().isEmpty && !isCloze(front.text))) {
+        return 'Fill in both sides, or hide a word with {{c1::word}}.';
+      }
       await ref.mutate(
         (s) => s.book.saveCard(
           front.text.trim(),
@@ -198,6 +213,8 @@ Future<void> cardDialog(BuildContext context, WidgetRef ref, {Flashcard? card}) 
           today: today(),
           deck: deck.text.trim().ifEmpty('General'),
           courseId: card?.courseId,
+          image: image.text.trim(),
+          audio: audio.text.trim(),
           existing: card,
         ),
       );
@@ -237,7 +254,7 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
   /// Reveals the back; if an answer was typed, says whether it matches.
   void _reveal(Flashcard c) => setState(() {
     _shown = true;
-    _matched = _typed.text.trim().isEmpty ? null : answerMatches(_typed.text, c.back);
+    _matched = _typed.text.trim().isEmpty ? null : answerMatches(_typed.text, isCloze(c.front) ? clozeAnswers(c.front).join(' / ') : c.back);
   });
 
   @override
@@ -316,7 +333,22 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     children: [
-                                      SelectableText(card.front, style: t.headlineSmall),
+                                      if (card.image.isNotEmpty) _CardImage(card.image),
+                                      SelectableText(
+                                        isCloze(card.front)
+                                            ? (_shown ? clozeAnswer(card.front) : clozeQuestion(card.front))
+                                            : card.front,
+                                        style: t.headlineSmall,
+                                      ),
+                                      if (card.audio.isNotEmpty)
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: TextButton.icon(
+                                            onPressed: () => openLink(context, _mediaUri(card.audio)),
+                                            icon: const Icon(Icons.volume_up_outlined),
+                                            label: const Text('Play audio'),
+                                          ),
+                                        ),
                                       if (_shown) ...[
                                         Padding(
                                           padding: const EdgeInsets.symmetric(vertical: 20),
@@ -336,7 +368,7 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                                               ),
                                             ),
                                           ),
-                                        SelectableText(card.back, style: t.titleMedium),
+                                        if (card.back.isNotEmpty) SelectableText(card.back, style: t.titleMedium),
                                       ],
                                     ],
                                   ),
@@ -374,6 +406,34 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+bool _isWeb(String ref) => ref.startsWith('http://') || ref.startsWith('https://');
+
+/// A web address as it is, a device path as a file address.
+String _mediaUri(String ref) => _isWeb(ref) ? ref : Uri.file(ref).toString();
+
+class _CardImage extends StatelessWidget {
+  const _CardImage(this.source);
+  final String source;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget missing(BuildContext _, Object _, StackTrace? _) =>
+        Text('Image not found: $source', style: TextStyle(color: muted(context)));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 240),
+        child: Semantics(
+          label: 'Card image',
+          child: _isWeb(source)
+              ? Image.network(source, errorBuilder: missing)
+              : Image.file(File(source), errorBuilder: missing),
         ),
       ),
     );
