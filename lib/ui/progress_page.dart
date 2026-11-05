@@ -18,14 +18,15 @@ class ProgressPage extends ConsumerWidget {
     body: AsyncView(
       ref.watch(statsProvider),
       onRetry: () => ref.invalidate(statsProvider),
-      builder: (s) => _Body(s),
+      builder: (s) => _Body(s, streaks: ref.watch(showStreaksProvider).value ?? false),
     ),
   );
 }
 
 class _Body extends StatelessWidget {
-  const _Body(this.s);
+  const _Body(this.s, {required this.streaks});
   final Stats s;
+  final bool streaks;
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +61,13 @@ class _Body extends StatelessWidget {
                       icon: Icons.hourglass_bottom,
                       caption: 'hours in total',
                     ),
-                    KpiTile(
-                      label: 'Streak',
-                      value: '${s.streak}',
-                      icon: Icons.local_fire_department_outlined,
-                      caption: 'best ${s.longestStreak} days',
-                    ),
+                    if (streaks)
+                      KpiTile(
+                        label: 'Streak',
+                        value: '${s.streak}',
+                        icon: Icons.local_fire_department_outlined,
+                        caption: 'best ${s.longestStreak} days',
+                      ),
                     KpiTile(
                       label: 'Consistency',
                       value: pct(s.consistency),

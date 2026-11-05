@@ -22,6 +22,23 @@ List<Override> vidyaOverrides(AppSession session) => [
   sentinelChecksProvider.overrideWithValue([...coreChecks, lockCheck]),
 ];
 
+/// Whether streaks are shown: the days-in-a-row count on Home, Progress and
+/// the suite summary. Off until the learner opts in, so nothing nags about a
+/// broken chain. Achievements are unaffected. Device-only.
+class ShowStreaks extends AsyncNotifier<bool> {
+  static const _key = 'ui.streaks';
+
+  @override
+  Future<bool> build() async => await ref.watch(sessionProvider).db.localSetting(_key) == 'on';
+
+  Future<void> set(bool on) async {
+    state = AsyncData(on);
+    await ref.read(sessionProvider).db.setLocalSetting(_key, on ? 'on' : 'off');
+  }
+}
+
+final showStreaksProvider = AsyncNotifierProvider<ShowStreaks, bool>(ShowStreaks.new);
+
 /// Achievements reached by the latest write, waiting to be celebrated.
 class Celebrations extends Notifier<List<Achievement>> {
   @override

@@ -35,7 +35,7 @@ void main() {
       await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 20)));
       await tester.pump();
     }
-    expect(find.text('day streak'), findsOneWidget);
+    expect(find.text('day streak'), findsNothing);
     expect(find.text('0 min'), findsOneWidget);
     expect(find.textContaining('Add a course'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());

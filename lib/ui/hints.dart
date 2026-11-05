@@ -1,7 +1,7 @@
 /// Vidya's hints, by id, on top of the shared ones (coreHints). Page banners
 /// (ids starting `page.`) explain a whole screen once.
 const vidyaHints = <String, String>{
-  'nav.home': 'Your day: today’s quests, level, streak and what to do next.',
+  'nav.home': 'Your day: today’s quests, level and what to do next.',
   'nav.learn': 'Programs, courses and topics: your curriculum.',
   'nav.progress': 'Every measure of how you are learning.',
   'nav.achievements': 'Milestones you have earned and the ones ahead.',
@@ -11,7 +11,7 @@ const vidyaHints = <String, String>{
   'nav.review': 'Flashcards that come back just before you would forget them.',
   'action.focus': 'A quiet timer that logs the time when it ends.',
   'action.export': 'Copy your skills, work and finished courses as Markdown for a CV or profile.',
-  'nav.settings': 'Sync, hints and security.',
+  'nav.settings': 'Streaks, sync, hints and security.',
   'page.home':
       'Three small quests each day keep the habit gentle. Experience comes from topics finished, time '
       'studied, tests taken, skills raised, work shown, notes written and cards reviewed.',

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vidya/app/app.dart';
 import 'package:vidya/app/modules.dart';
+import 'package:vidya/app/providers.dart';
 
 import 'app_harness.dart';
 import 'seed.dart';
@@ -82,6 +85,25 @@ void main() {
     await app.tapText('Pause');
     expect(find.text('paused'), findsOneWidget);
     expect(tester.takeException(), isNull);
+    await app.close();
+  });
+
+  testWidgets('streaks are hidden until switched on in Settings', (tester) async {
+    final app = AppHarness(tester)..desktop();
+    await app.open(seed: seedBook);
+    await app.run();
+    await app.go('Home');
+    expect(find.text('day streak'), findsNothing);
+    await app.go('Progress');
+    expect(find.text('Streak'), findsNothing);
+    // What the Settings switch does.
+    final scope = ProviderScope.containerOf(tester.element(find.byType(VidyaApp)));
+    await tester.runAsync(() => scope.read(showStreaksProvider.notifier).set(true));
+    await app.settle();
+    await app.go('Home');
+    expect(find.text('day streak'), findsOneWidget);
+    await app.go('Progress');
+    expect(find.text('Streak'), findsOneWidget);
     await app.close();
   });
 }
