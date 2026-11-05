@@ -11,6 +11,8 @@ const vidyaHints = <String, String>{
   'nav.review': 'Flashcards that come back just before you would forget them.',
   'action.focus': 'A quiet timer that logs the time when it ends.',
   'action.export': 'Copy your skills, work and finished courses as Markdown for a CV or profile.',
+  'action.exportDecks':
+      'Save your cards to a file you can send to someone. Schedules stay private; they start fresh.',
   'nav.settings': 'Streaks, sync, hints and security.',
   'page.home':
       'Three small quests each day keep the habit gentle. Experience comes from topics finished, time '

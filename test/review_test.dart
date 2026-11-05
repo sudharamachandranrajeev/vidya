@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:brahma_core/brahma_core.dart';
@@ -156,6 +157,21 @@ void main() {
       expect(clozeQuestion(f), 'The capital of [country] is […].');
       expect(clozeAnswer(f), 'The capital of France is Paris.');
       expect(clozeAnswers(f), ['France', 'Paris']);
+    });
+  });
+
+  group('export', () {
+    test('decksJson shares text, deck and media but no schedule', () async {
+      await book.saveCard('B?', 'b', today: today, deck: 'Z', image: 'https://x/y.png');
+      await book.saveCard('A?', 'a', today: today, deck: 'A');
+      await book.reviewCard(await book.db.select(book.db.learnCards).get().then((l) => l.first), Grade.good, today: today);
+      final j = jsonDecode(decksJson((await book.stats(today)).cards)) as Map<String, dynamic>;
+      expect((j['format'], j['version']), ('vidya-decks', 1));
+      final cards = (j['cards'] as List).cast<Map<String, dynamic>>();
+      expect(cards.map((c) => c['front']), ['A?', 'B?']);
+      expect(cards[1]['image'], 'https://x/y.png');
+      expect(cards[0].containsKey('image'), isFalse);
+      expect(cards.expand((c) => c.keys).toSet(), {'deck', 'front', 'back', 'image'});
     });
   });
 }

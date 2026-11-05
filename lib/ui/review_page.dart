@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:brahma_core/brahma_core.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,6 +11,7 @@ import '../app/providers.dart';
 import '../db/database.dart';
 import '../domain/answer.dart';
 import '../domain/cloze.dart';
+import '../domain/export.dart';
 import '../domain/review.dart';
 import '../domain/stats.dart';
 import 'charts.dart';
@@ -22,6 +26,14 @@ class ReviewPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => PageScaffold(
     title: 'Review',
     banner: 'page.review',
+    actions: [
+      HintIconButton(
+        'action.exportDecks',
+        icon: Icons.ios_share,
+        label: 'Export cards',
+        onPressed: () => _exportCards(context, ref),
+      ),
+    ],
     fab: FloatingActionButton.extended(
       onPressed: () => cardDialog(context, ref),
       icon: const Icon(Icons.add),
@@ -33,6 +45,22 @@ class ReviewPage extends ConsumerWidget {
       builder: (s) => _Body(s),
     ),
   );
+}
+
+/// Saves every card to a JSON file the learner picks the place for.
+Future<void> _exportCards(BuildContext context, WidgetRef ref) async {
+  final cards = (await ref.read(statsProvider.future)).cards;
+  if (!context.mounted) return;
+  if (cards.isEmpty) return showMessage(context, 'No cards to export yet.');
+  final saved = await FilePicker.saveFile(
+    dialogTitle: 'Export cards',
+    fileName: 'vidya-cards-${today()}.json',
+    bytes: Uint8List.fromList(utf8.encode(decksJson(cards))),
+    mimeType: 'application/json',
+  );
+  if (saved != null && context.mounted) {
+    showMessage(context, '${cards.length} ${cards.length == 1 ? 'card' : 'cards'} exported. Local images and audio stay on this device.');
+  }
 }
 
 class _Body extends ConsumerWidget {
