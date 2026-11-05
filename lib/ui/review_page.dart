@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app/providers.dart';
 import '../db/database.dart';
+import '../domain/answer.dart';
 import '../domain/review.dart';
 import '../domain/stats.dart';
 import 'charts.dart';
@@ -224,6 +225,20 @@ class ReviewSession extends ConsumerStatefulWidget {
 class _ReviewSessionState extends ConsumerState<ReviewSession> {
   List<Flashcard>? _queue;
   var _shown = false, _done = 0, _busy = false;
+  final _typed = TextEditingController();
+  bool? _matched;
+
+  @override
+  void dispose() {
+    _typed.dispose();
+    super.dispose();
+  }
+
+  /// Reveals the back; if an answer was typed, says whether it matches.
+  void _reveal(Flashcard c) => setState(() {
+    _shown = true;
+    _matched = _typed.text.trim().isEmpty ? null : answerMatches(_typed.text, c.back);
+  });
 
   @override
   void initState() {
@@ -249,6 +264,8 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
       }
       _done++;
       _shown = false;
+      _matched = null;
+      _typed.clear();
       _busy = false;
     });
   }
@@ -305,6 +322,20 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                                           padding: const EdgeInsets.symmetric(vertical: 20),
                                           child: Divider(color: hairline(context)),
                                         ),
+                                        if (_matched != null)
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 12),
+                                            child: Text(
+                                              _matched!
+                                                  ? 'Your answer matches.'
+                                                  : 'Compare with your answer.',
+                                              style: t.labelLarge?.copyWith(
+                                                color: _matched!
+                                                    ? Theme.of(context).colorScheme.primary
+                                                    : muted(context),
+                                              ),
+                                            ),
+                                          ),
                                         SelectableText(card.back, style: t.titleMedium),
                                       ],
                                     ],
@@ -314,12 +345,19 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          if (!_shown)
-                            FilledButton(
-                              onPressed: () => setState(() => _shown = true),
-                              child: const Text('Show answer'),
-                            )
-                          else
+                          if (!_shown) ...[
+                            TextField(
+                              controller: _typed,
+                              decoration: const InputDecoration(
+                                labelText: 'Type your answer (optional)',
+                                helperText: 'Capitals, spacing and punctuation do not matter.',
+                              ),
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (_) => _reveal(card),
+                            ),
+                            const SizedBox(height: 12),
+                            FilledButton(onPressed: () => _reveal(card), child: const Text('Show answer')),
+                          ] else
                             Row(
                               children: [
                                 for (final g in Grade.values)
