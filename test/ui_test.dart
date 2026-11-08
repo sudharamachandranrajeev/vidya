@@ -52,6 +52,32 @@ void main() {
     await app.close();
   });
 
+  testWidgets('a pasted AI reply previews and imports as a program', (tester) async {
+    final app = AppHarness(tester)..desktop();
+    await app.open();
+    await app.run();
+    await app.go('Learn');
+    await app.tapText('Import a plan');
+    expect(find.text('Copy AI prompt'), findsOneWidget);
+    await app.enter('AI reply', 'not a plan');
+    expect(find.textContaining('No plan found'), findsOneWidget);
+    await app.enter(
+      'AI reply',
+      'Here you go:\n```json\n{"format": "vidya-curriculum", "version": 1, '
+          '"program": {"title": "Pottery", "goal": "Throw a bowl"}, '
+          '"courses": [{"title": "Wheel basics", "dueWeek": 2, "topics": [{"title": "Centering", "details": "Brace your arms."}]}], '
+          '"cards": [{"course": "Wheel basics", "front": "First step on the wheel?", "back": "Centering"}]}\n```',
+    );
+    expect(find.text('1 courses · 1 topics · 1 cards · 0 skills · 0 notes'), findsOneWidget);
+    await app.tapText('Import');
+    expect(find.text('Pottery'), findsOneWidget);
+    expect(find.text('0 of 1 courses'), findsOneWidget);
+    // The topic's details became a study-guide note.
+    expect(find.textContaining('Achievement earned: First note'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await app.close();
+  });
+
   testWidgets('a new card is reviewed and the queue clears', (tester) async {
     final app = AppHarness(tester)..desktop();
     await app.open();

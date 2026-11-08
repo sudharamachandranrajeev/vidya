@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+- Learn: import a whole study plan. Copy the in-app prompt into any AI chat, paste the reply (or
+  open a `.json` plan), check the summary and import. Courses arrive with due dates, topics with
+  minutes, topic details and resources as one study-guide note per course, plus skills,
+  flashcards linked to their course, and notes. Plans merge by title, so a second import or the
+  next part of a long plan adds only what is new. Example: `docs/examples/` holds a plan for NYC
+  Transit's Car Inspector exam 7612.
+- Review: typed answers are graded leniently. Case, spacing, punctuation, a leading article and
+  bracketed text do not matter, and any synonym listed on the back ("car / automobile") counts.
+- Day streaks are hidden until switched on in Settings. Achievements are unchanged.
+- Optional review reminders on Android for days with cards due, at a time and weekly limit you
+  set. No server involved.
+- Flashcards can carry an image and audio, and cloze cards hide `{{c1::…}}` spans.
+- Export cards to a share file; import cards from CSV, tab-separated text or a Vidya file.
+
 ## 0.2.1 (2026-10-25)
 
 - Phones get new navigation: a floating dock that scrolls through every screen (the "More"

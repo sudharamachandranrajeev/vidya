@@ -15,13 +15,17 @@ const vidyaHints = <String, String>{
       'Add cards from a CSV or tab-separated file (Quizlet, Anki text export) with front and back columns.',
   'action.exportDecks':
       'Save your cards to a file you can send to someone. Schedules stay private; they start fresh.',
+  'action.importPlan':
+      'Bring in a whole study plan: copy the prompt into any AI chat, then paste its reply. Courses, '
+      'topics, due dates, skills, flashcards and notes arrive together.',
   'nav.settings': 'Streaks, sync, hints and security.',
   'page.home':
       'Three small quests each day keep the habit gentle. Experience comes from topics finished, time '
       'studied, tests taken, skills raised, work shown, notes written and cards reviewed.',
   'page.learn':
       'A program is a goal; it holds courses; a course holds topics. Finish topics to move a course on, '
-      'and finish every course to complete the program. Start from a template or build your own.',
+      'and finish every course to complete the program. Start from a template, import a plan made '
+      'with an AI chat, or build your own.',
   'page.progress': 'Everything is measured from what you record. Nothing here is typed in by hand.',
   'page.skills':
       'Rate each skill from 0 to 5 and set the level you are aiming for. The gap is your to-do list.',

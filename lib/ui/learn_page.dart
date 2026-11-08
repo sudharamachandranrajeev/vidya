@@ -10,6 +10,7 @@ import 'charts.dart';
 import 'common.dart';
 import 'course_page.dart';
 import 'dialogs.dart';
+import 'plan_import.dart';
 import 'zen.dart';
 
 class LearnPage extends ConsumerWidget {
@@ -20,6 +21,12 @@ class LearnPage extends ConsumerWidget {
     title: 'Learn',
     banner: 'page.learn',
     actions: [
+      HintIconButton(
+        'action.importPlan',
+        icon: Icons.playlist_add,
+        label: 'Import a study plan',
+        onPressed: () => importPlanDialog(context, ref),
+      ),
       IconButton(
         tooltip: 'Start from a template',
         icon: const Icon(Icons.auto_stories_outlined),
@@ -56,6 +63,10 @@ class LearnPage extends ConsumerWidget {
                           FilledButton(
                             onPressed: () => templateDialog(context, ref),
                             child: const Text('Use a template'),
+                          ),
+                          OutlinedButton(
+                            onPressed: () => importPlanDialog(context, ref),
+                            child: const Text('Import a plan'),
                           ),
                           OutlinedButton(
                             onPressed: () => addProgramDialog(context, ref),

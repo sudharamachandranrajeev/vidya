@@ -64,7 +64,9 @@ String decksJson(List<Flashcard> cards) => const JsonEncoder.withIndent('  ').co
   'format': 'vidya-decks',
   'version': 1,
   'cards': [
-    for (final c in [...cards]..sort((a, b) => a.deck != b.deck ? a.deck.compareTo(b.deck) : a.front.compareTo(b.front)))
+    for (final c in [
+      ...cards,
+    ]..sort((a, b) => a.deck != b.deck ? a.deck.compareTo(b.deck) : a.front.compareTo(b.front)))
       {
         'deck': c.deck,
         'front': c.front,
