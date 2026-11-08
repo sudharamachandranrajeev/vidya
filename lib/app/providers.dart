@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 
 import '../db/database.dart';
 import '../domain/achievements.dart';
+import '../domain/review.dart';
 import '../domain/stats.dart';
 import '../ui/hints.dart';
 import 'session.dart';
@@ -38,6 +39,23 @@ class ShowStreaks extends AsyncNotifier<bool> {
 }
 
 final showStreaksProvider = AsyncNotifierProvider<ShowStreaks, bool>(ShowStreaks.new);
+
+/// How hard the flashcard schedule works (see [ReviewPace]). Device-only,
+/// like the other Settings choices; cards keep the gaps they already have.
+class Pace extends AsyncNotifier<ReviewPace> {
+  static const _key = 'review.pace';
+
+  @override
+  Future<ReviewPace> build() async =>
+      ReviewPace.named(await ref.watch(sessionProvider).db.localSetting(_key));
+
+  Future<void> set(ReviewPace pace) async {
+    state = AsyncData(pace);
+    await ref.read(sessionProvider).db.setLocalSetting(_key, pace.name);
+  }
+}
+
+final reviewPaceProvider = AsyncNotifierProvider<Pace, ReviewPace>(Pace.new);
 
 /// Achievements reached by the latest write, waiting to be celebrated.
 class Celebrations extends Notifier<List<Achievement>> {

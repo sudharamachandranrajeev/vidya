@@ -480,8 +480,13 @@ class LearningBook {
       });
 
   /// Records a review and moves the card to its next due day.
-  Future<void> reviewCard(Flashcard c, Grade g, {required String today}) => db.transaction(() async {
-    final n = nextSchedule(c, g, today);
+  Future<void> reviewCard(
+    Flashcard c,
+    Grade g, {
+    required String today,
+    ReviewPace pace = ReviewPace.standard,
+  }) => db.transaction(() async {
+    final n = nextSchedule(c, g, today, pace: pace);
     await save(
       db.learnCards,
       c.copyWith(interval: n.interval, ease: n.ease, reps: n.reps, lapses: n.lapses, due: n.due),

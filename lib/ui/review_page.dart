@@ -333,8 +333,9 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
     if (_busy) return;
     setState(() => _busy = true);
     final day = today();
-    await ref.mutate((s) => s.book.reviewCard(c, g, today: day));
-    final n = nextSchedule(c, g, day);
+    final pace = await ref.read(reviewPaceProvider.future);
+    await ref.mutate((s) => s.book.reviewCard(c, g, today: day, pace: pace));
+    final n = nextSchedule(c, g, day, pace: pace);
     setState(() {
       _queue!.removeAt(0);
       // Forgotten: see it again, with its new schedule, before finishing.
@@ -387,8 +388,31 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(card.deck, style: t.labelLarge?.copyWith(color: muted(context))),
-                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(card.deck, style: t.labelLarge?.copyWith(color: muted(context))),
+                              ),
+                              TextButton.icon(
+                                onPressed: () => showDialog<void>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Why this card now?'),
+                                    content: Text(dueReason(card, today())),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                icon: const Icon(Icons.help_outline, size: 18),
+                                label: const Text('Why now?'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
                           Expanded(
                             child: Card(
                               child: Padding(
@@ -505,15 +529,16 @@ class _CardImage extends StatelessWidget {
   }
 }
 
-class _GradeButton extends StatelessWidget {
+class _GradeButton extends ConsumerWidget {
   const _GradeButton(this.card, this.grade, {required this.onPressed});
   final Flashcard card;
   final Grade grade;
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    final days = nextSchedule(card, grade, today()).interval;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pace = ref.watch(reviewPaceProvider).value ?? ReviewPace.standard;
+    final days = nextSchedule(card, grade, today(), pace: pace).interval;
     final when = days == 0 ? 'today' : '${days}d';
     final child = Column(
       mainAxisSize: MainAxisSize.min,

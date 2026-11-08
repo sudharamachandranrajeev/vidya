@@ -8,6 +8,9 @@
   flashcards linked to their course, and notes. Plans merge by title, so a second import or the
   next part of a long plan adds only what is new. Example: `docs/examples/` holds a plan for NYC
   Transit's Car Inspector exam 7612.
+- Review pace in Settings: Light (longer gaps, fewer reviews), Standard or Intensive (shorter
+  gaps before an exam). The buttons show the next gap for the pace you chose. During a review,
+  "Why now?" explains in plain words why a card is due.
 - Review: typed answers are graded leniently. Case, spacing, punctuation, a leading article and
   bracketed text do not matter, and any synonym listed on the back ("car / automobile") counts.
 - Day streaks are hidden until switched on in Settings. Achievements are unchanged.

@@ -32,6 +32,7 @@ const vidyaHints = <String, String>{
   'page.portfolio': 'Add what you have made or earned and the skills it proves. The score rewards variety and evidence for your skills.',
   'page.review':
       'Rate each card by how well you remembered it. Again brings it back today; Good and Easy push it '
-      'further out each time, so cards you know well take less of your day.',
+      'further out each time, so cards you know well take less of your day. Tap "Why now?" on a card '
+      'to see why it is due, and pick a lighter or more intensive pace in Settings.',
   'page.notes': 'Write down what you learn. Tag notes to find them again.',
 };

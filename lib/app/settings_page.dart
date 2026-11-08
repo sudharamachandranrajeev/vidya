@@ -2,6 +2,7 @@ import 'package:brahma_core/brahma_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../domain/review.dart';
 import 'providers.dart';
 import 'reminders.dart';
 
@@ -13,6 +14,7 @@ class SettingsPage extends StatelessWidget {
     title: 'Settings',
     children: [
       _StreaksCard(),
+      _PaceCard(),
       _RemindersCard(),
       AppLockCard(),
       HintsCard(),
@@ -47,6 +49,33 @@ class _StreaksCard extends ConsumerWidget {
       onChanged: (v) => ref.read(showStreaksProvider.notifier).set(v),
     ),
   );
+}
+
+/// Review pace: three named presets over the flashcard schedule, so nobody
+/// has to tune ease factors or intervals.
+class _PaceCard extends ConsumerWidget {
+  const _PaceCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pace = ref.watch(reviewPaceProvider).value ?? ReviewPace.standard;
+    return SectionCard(
+      title: 'Review pace',
+      padding: const EdgeInsets.only(bottom: 8),
+      child: RadioGroup<ReviewPace>(
+        groupValue: pace,
+        onChanged: (p) {
+          if (p != null) ref.read(reviewPaceProvider.notifier).set(p);
+        },
+        child: Column(
+          children: [
+            for (final p in ReviewPace.values)
+              RadioListTile<ReviewPace>(value: p, title: Text(p.label), subtitle: Text(p.about)),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 /// Review reminders: on this device only, at a time and a weekly limit the

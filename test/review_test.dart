@@ -63,6 +63,37 @@ void main() {
       expect(x.ease, 1.3);
     });
 
+    test('pace stretches or shrinks remembered gaps, never a forgotten card', () async {
+      await book.saveCard('Q', 'A', today: today);
+      final c = (await card()).copyWith(reps: 3, interval: 10, ease: 2.5);
+      int gap(Grade g, ReviewPace p) => nextSchedule(c, g, today, pace: p).interval;
+      expect(
+        [for (final p in ReviewPace.values) gap(Grade.good, p)],
+        [35, 25, 18], // 25 × 1.4, 25, 25 × 0.7
+      );
+      for (final p in ReviewPace.values) {
+        expect(gap(Grade.again, p), 0);
+        expect(gap(Grade.hard, p) <= gap(Grade.good, p) && gap(Grade.good, p) < gap(Grade.easy, p), isTrue);
+      }
+      // A new card's first gap is never shorter than a day.
+      expect(nextSchedule(await card(), Grade.good, today, pace: ReviewPace.intensive).interval, 1);
+      await book.reviewCard(await card(), Grade.good, today: today, pace: ReviewPace.light);
+      expect((await card()).due, '2026-10-25');
+      expect(ReviewPace.named('nonsense'), ReviewPace.standard);
+    });
+
+    test('dueReason explains new, forgotten, remembered and overdue cards', () async {
+      await book.saveCard('Q', 'A', today: today);
+      final c = await card();
+      expect(dueReason(c, today), startsWith('A new card.'));
+      expect(dueReason(c.copyWith(lapses: 2), today), contains('forgotten 2 times'));
+      final known = c.copyWith(reps: 3, interval: 8, ease: 2.6, due: today);
+      expect(dueReason(known, today), contains('remembered it 3 times in a row, so it waited 8 days'));
+      expect(dueReason(known, today), contains('about 2.6 times longer'));
+      expect(dueReason(known, today), isNot(contains('past that')));
+      expect(dueReason(known, '2026-10-27'), contains('waited 3 days past that'));
+    });
+
     test('editing a card keeps its schedule', () async {
       await book.saveCard('Q', 'A', today: today);
       await book.reviewCard(await card(), Grade.good, today: today);
