@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 (2026-11-08)
 
 - Learn: import a whole study plan. Copy the in-app prompt into any AI chat, paste the reply (or
   open a `.json` plan), check the summary and import. Courses arrive with due dates, topics with
@@ -8,6 +8,14 @@
   flashcards linked to their course, and notes. Plans merge by title, so a second import or the
   next part of a long plan adds only what is new. Example: `docs/examples/` holds a plan for NYC
   Transit's Car Inspector exam 7612.
+- "Make it with AI" writes the plan in the app, through the AI chosen for Ask AI. Type the goal
+  and, if you like, the syllabus, level, weekly hours and deadline; a long plan arrives part
+  after part. A chat website cannot answer in the app, so then it copies the filled-in prompt.
+  Several parts pasted one after another import together, and the summary names missing parts.
+- A short welcome on first start asks where your data lives: on this device only, or synced
+  through a home or cloud server, with guided steps. Vidya says when a newer release is out.
+- App lock: a PIN or the device's own unlock over the app.
+- Ask AI for help on any screen, and Report a problem or suggest a feature from the app.
 - Review pace in Settings: Light (longer gaps, fewer reviews), Standard or Intensive (shorter
   gaps before an exam). The buttons show the next gap for the pace you chose. During a review,
   "Why now?" explains in plain words why a card is due.

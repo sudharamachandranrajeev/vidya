@@ -110,6 +110,39 @@ Good luck!''');
       final p = parseCurriculum(example);
       expect(p.courses.single.topics.single.resources.single, 'Resource name — https://…');
     });
+
+    test('parts pasted one after another read separately; missing parts are named', () {
+      String part(String k, String course) =>
+          '{"part": "$k", "program": {"title": "P"}, "courses": [{"title": "$course", '
+          '"topics": [{"title": "Braces { } and \\"quotes\\""}]}]}';
+      final plans = parseCurriculumParts(
+        'Part one:\n${part('1 of 3', 'A')}\n"next part"\n${part('3 of 3', 'C')}',
+      );
+      expect(plans.map((p) => p.courses.single.title), ['A', 'C']);
+      expect(plans.first.courses.single.topics.single.title, 'Braces { } and "quotes"');
+      expect(missingParts(plans), [2]);
+      expect(missingParts(parseCurriculumParts(part('1 of 1', 'A'))), isEmpty);
+      // One reply is read as before, trailing commas and all.
+      expect(parseCurriculumParts('{"title": "Solo", "courses": [{"title": "A"},],}').single.title, 'Solo');
+    });
+
+    test('the filled-in prompt carries the learner\'s answers instead of brackets', () {
+      final p = filledCurriculumPrompt((
+        goal: 'Pass exam 7612',
+        source: '',
+        level: 'beginner',
+        hours: '6',
+        deadline: '',
+        other: '',
+      ));
+      expect(p, contains('- Goal, exam or qualification: Pass exam 7612\n'));
+      expect(p, contains(': not given\n'));
+      expect(p, contains('- Where I am now: beginner\n'));
+      expect(p, contains('- Time I can study each week: 6\n'));
+      expect(p, contains('- Deadline or exam date: none\n'));
+      expect(p, isNot(contains('[for example')));
+      expect(p, contains('RULES:'));
+    });
   });
 
   group('importCurriculum', () {

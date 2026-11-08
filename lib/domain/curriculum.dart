@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:brahma_core/brahma_core.dart';
 
@@ -6,8 +7,8 @@ import 'cloze.dart';
 
 /// A whole study plan in one file: a program, its roadmap of courses with
 /// topics, the skills it builds, flashcards and notes. Learners get one by
-/// pasting [curriculumPrompt] into any AI chat and pasting the reply back, or
-/// by opening a saved `.json` file. Nothing here touches the database; see
+/// pasting [curriculumPrompt] into any AI chat and pasting the reply back, by
+/// letting Vidya ask a connected AI, or by opening a saved `.json` file. Nothing here touches the database; see
 /// `LearningBook.importCurriculum`.
 
 class PlanTopic {
@@ -76,6 +77,56 @@ const _maxCourses = 100, _maxTopics = 300, _maxCards = 5000, _maxNotes = 300, _m
 const _maxTitle = 200, _maxText = 4000, _maxBody = 40000;
 
 const _kinds = {'course', 'book', 'certification', 'degree', 'project', 'practice'};
+
+/// Reads one reply, or several parts of a long plan pasted one after
+/// another. Each part is a whole plan for some of the courses.
+List<CurriculumPlan> parseCurriculumParts(String text) {
+  final objects = _jsonObjects(text);
+  if (objects.length < 2) return [parseCurriculum(text)];
+  return [for (final o in objects) parseCurriculum(o)];
+}
+
+/// The `{…}` blocks at the top level of [t], skipping braces inside strings.
+List<String> _jsonObjects(String t) {
+  final out = <String>[];
+  var depth = 0, start = 0, inString = false, escaped = false;
+  for (var i = 0; i < t.length; i++) {
+    final c = t[i];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (c == r'\') {
+        escaped = true;
+      } else if (c == '"') {
+        inString = false;
+      }
+    } else if (c == '"') {
+      // Quotes in the prose around the JSON are not strings.
+      inString = depth > 0;
+    } else if (c == '{') {
+      if (depth++ == 0) start = i;
+    } else if (c == '}' && depth > 0 && --depth == 0) {
+      out.add(t.substring(start, i + 1));
+    }
+  }
+  return out;
+}
+
+/// Parts named "k of N" that are not among [plans], for a warning.
+List<int> missingParts(List<CurriculumPlan> plans) {
+  final have = <int>{};
+  var total = 0;
+  for (final p in plans) {
+    final m = RegExp(r'^(\d+)\s*of\s*(\d+)$').firstMatch(p.part.trim());
+    if (m == null) continue;
+    have.add(int.parse(m[1]!));
+    total = max(total, min(int.parse(m[2]!), 50));
+  }
+  return [
+    for (var k = 1; k <= total; k++)
+      if (!have.contains(k)) k,
+  ];
+}
 
 /// Reads a plan from a file or a pasted AI reply. Tolerates what chat apps
 /// add around the JSON (prose, ``` fences) and trailing commas. Throws a
@@ -322,3 +373,26 @@ RULES:
 - Be accurate. Leave out anything you are not sure of rather than guess.
 - If everything will not fit in one reply, split it into parts. Set "part" to "1 of N", "2 of N" and so on. Every part repeats the same "program" block; part 1 also carries the skills and notes; each part holds whole courses with their own cards. I will say "next part" to get the next one.
 ''';
+
+/// What the learner tells the AI about themselves, in the order of the
+/// prompt's ABOUT ME lines.
+typedef PlanRequest = ({
+  String goal,
+  String source,
+  String level,
+  String hours,
+  String deadline,
+  String other,
+});
+
+/// [curriculumPrompt] with the learner's answers in place of the brackets.
+/// Blank answers become "not given" (the deadline: "none").
+String filledCurriculumPrompt(PlanRequest r) {
+  final answers = [r.goal, r.source, r.level, r.hours, r.deadline, r.other];
+  var i = 0;
+  return curriculumPrompt.replaceAllMapped(RegExp(r'^(- [^:\n]+: )\[[^\]\n]*\]$', multiLine: true), (m) {
+    final k = i++;
+    final a = k < answers.length ? answers[k].trim() : '';
+    return '${m[1]}${a.isNotEmpty ? a : (k == 4 ? 'none' : 'not given')}';
+  });
+}

@@ -12,12 +12,14 @@ const vidyaHints = <String, String>{
   'action.focus': 'A quiet timer that logs the time when it ends.',
   'action.export': 'Copy your skills, work and finished courses as Markdown for a CV or profile.',
   'action.importDecks':
-      'Add cards from a CSV or tab-separated file (Quizlet, Anki text export) with front and back columns.',
+      'Add cards from a CSV or tab-separated file (the plain-text export of most flashcard apps) '
+      'with front and back columns.',
   'action.exportDecks':
       'Save your cards to a file you can send to someone. Schedules stay private; they start fresh.',
   'action.importPlan':
-      'Bring in a whole study plan: copy the prompt into any AI chat, then paste its reply. Courses, '
-      'topics, due dates, skills, flashcards and notes arrive together.',
+      'Bring in a whole study plan: let the AI you chose for Ask AI write it, or copy the prompt into '
+      'any AI chat and paste its reply. Courses, topics, due dates, skills, flashcards and notes '
+      'arrive together.',
   'nav.settings': 'Streaks, sync, hints and security.',
   'page.home':
       'Three small quests each day keep the habit gentle. Experience comes from topics finished, time '

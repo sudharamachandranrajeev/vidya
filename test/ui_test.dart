@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:brahma_core/brahma_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,6 +81,45 @@ void main() {
     await app.close();
   });
 
+  testWidgets('the connected AI writes a plan in two parts, which import as one program', (tester) async {
+    final asked = <List<HelpTurn>>[];
+    String part(int k, String course) =>
+        '{"format": "vidya-curriculum", "version": 1, "part": "$k of 2", '
+        '"program": {"title": "Pottery"}, "courses": [{"title": "$course", "topics": [{"title": "T$k"}]}]}';
+    final app = AppHarness(tester)..desktop();
+    await app.open(
+      seed: (b) =>
+          b.db.setLocalSetting('ai.help', jsonEncode(const HelpAiSetup(via: HelpAi.openai).toJson())),
+    );
+    await app.run(
+      overrides: [
+        helpAskerProvider.overrideWithValue(
+          (setup) async => _FakeAsker(setup, (turns) {
+            asked.add([...turns]);
+            return asked.length == 1 ? 'Sure!\n${part(1, 'Wheel')}' : part(2, 'Glazing');
+          }),
+        ),
+      ],
+    );
+    await app.go('Learn');
+    await app.tapText('Import a plan');
+    await app.tapText('Make it with AI');
+    expect(find.text('Written by: ${HelpAi.openai.label}'), findsOneWidget);
+    await app.tapText('Write the plan');
+    expect(find.text('Say what the plan is for first.'), findsOneWidget);
+    await app.enter('What the plan is for', 'Throw a bowl');
+    await app.tapText('Write the plan');
+    expect(asked, hasLength(2));
+    expect(asked.first.single.text, contains('- Goal, exam or qualification: Throw a bowl'));
+    expect(asked.last.last.text, 'next part');
+    expect(find.text('2 parts · 2 courses · 2 topics · 0 cards · 0 skills · 0 notes'), findsOneWidget);
+    await app.tapText('Import');
+    expect(find.text('Pottery'), findsOneWidget);
+    expect(find.text('0 of 2 courses'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await app.close();
+  });
+
   testWidgets('a new card is reviewed and the queue clears', (tester) async {
     final app = AppHarness(tester)..desktop();
     await app.open();
@@ -132,4 +174,13 @@ void main() {
     expect(find.text('Streak'), findsOneWidget);
     await app.close();
   });
+}
+
+/// Answers from [reply] instead of a network AI.
+class _FakeAsker extends HelpAsker {
+  _FakeAsker(super.setup, this.reply);
+  final String Function(List<HelpTurn> turns) reply;
+
+  @override
+  Future<String> ask(String system, List<HelpTurn> turns) async => reply(turns);
 }
