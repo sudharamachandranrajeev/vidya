@@ -18,6 +18,7 @@
   set. No server involved.
 - Flashcards can carry an image and audio, and cloze cards hide `{{c1::…}}` spans.
 - Export cards to a share file; import cards from CSV, tab-separated text or a Vidya file.
+- The database moves to version 3 (card image and audio); existing data is kept.
 
 ## 0.2.1 (2026-10-25)
 
