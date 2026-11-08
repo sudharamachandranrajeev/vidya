@@ -214,7 +214,7 @@ void main() {
   group('import', () {
     List<int> b(String s) => utf8.encode(s);
 
-    test('Quizlet tab export: term and definition, quoted multi-line fields', () {
+    test('tab-separated export: term and definition, quoted multi-line fields', () {
       final r = parseDeckFile('q.txt', b('Hola\tHello\n"Adi\nos"\t"Good ""bye"""\n\nlonely\t\n'));
       expect(r.cards.map((c) => (c.front, c.back)), [('Hola', 'Hello'), ('Adi\nos', 'Good "bye"')]);
       expect((r.skipped, r.cards.first.deck), (1, 'Imported'));
@@ -230,7 +230,7 @@ void main() {
       expect(isCloze(r.cards[1].front), isTrue);
     });
 
-    test('Anki plain-text export skips # lines; vidya json round-trips', () async {
+    test('plain-text export skips # lines; vidya json round-trips', () async {
       expect(parseDeckFile('n.txt', b('#separator:tab\n#html:false\nF\tB\ttag\n')).cards.single.back, 'B');
       await book.saveCard('J?', 'j', today: today, deck: 'D', audio: 'https://x/a.mp3');
       final r = parseDeckFile('d.json', b(decksJson((await book.stats(today)).cards)));

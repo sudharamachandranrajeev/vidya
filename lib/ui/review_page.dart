@@ -54,7 +54,7 @@ class ReviewPage extends ConsumerWidget {
   );
 }
 
-/// Adds cards from a CSV, tab-separated (Quizlet, Anki text) or Vidya file.
+/// Adds cards from a CSV, tab-separated (flashcard app text export) or Vidya file.
 Future<void> _importCards(BuildContext context, WidgetRef ref) async {
   final file = await FilePicker.pickFile(
     dialogTitle: 'Import cards',

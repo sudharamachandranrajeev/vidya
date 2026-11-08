@@ -9,15 +9,15 @@ typedef ImportedCard = ({String front, String back, String deck, String image, S
 /// to be left out (missing a side).
 typedef ImportResult = ({List<ImportedCard> cards, int skipped});
 
-/// Reads a deck file by its name: CSV or tab-separated text (Quizlet's export,
-/// Anki's plain-text export) or a Vidya share file. Throws [FormatException]
+/// Reads a deck file by its name: CSV or tab-separated text (the plain-text
+/// export most flashcard apps offer) or a Vidya share file. Throws [FormatException]
 /// with a message fit for the learner when the format cannot be read.
 ImportResult parseDeckFile(String name, List<int> bytes) {
   final ext = name.contains('.') ? name.split('.').last.toLowerCase() : '';
   if (ext == 'apkg' || ext == 'colpkg') {
     throw const FormatException(
-      'Anki .apkg files are not yet supported. In Anki use Export → "Notes in Plain Text" '
-      'and import that file, or save the cards as CSV.',
+      '.apkg deck packages are not yet supported. Export the deck as plain text or CSV '
+      'from the app it came from and import that file.',
     );
   }
   final text = utf8.decode(bytes, allowMalformed: true).replaceFirst('﻿', '');
@@ -59,7 +59,7 @@ const _aliases = {
 };
 
 ImportResult _fromTable(String text) {
-  // Anki's plain-text export starts with `#separator:tab`-style comment lines.
+  // Plain-text deck exports may start with `#separator:tab`-style comment lines.
   final lines = text.split(RegExp(r'\r?\n'));
   final body = lines.where((l) => !l.startsWith('#')).join('\n');
   final first = body.split('\n').firstWhere((l) => l.trim().isNotEmpty, orElse: () => '');

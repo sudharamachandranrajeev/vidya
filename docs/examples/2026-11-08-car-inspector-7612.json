@@ -378,12 +378,12 @@
       "title": "Practice tests and review",
       "kind": "practice",
       "hours": 14,
-      "provider": "Car Inspector Passbook (National Learning Corporation) and your own notes",
+      "provider": "A published Car Inspector practice-question book and your own notes",
       "startWeek": 8,
       "dueWeek": 10,
       "summary": "Work timed practice sets, mark every wrong answer to its test area and topic, and review those topics. Aim for well above the 65% pass mark.",
       "topics": [
-        { "title": "Diagnostic practice set and error log", "minutes": 90, "details": "Take a full timed set cold. Log each miss by test area (electrical, electronic, mechanical, pneumatic, schematics, safety) and cause (did not know, misread, calculation slip).", "resources": [{ "title": "Car Inspector — Passbooks Study Guide, National Learning Corporation" }] },
+        { "title": "Diagnostic practice set and error log", "minutes": 90, "details": "Take a full timed set cold. Log each miss by test area (electrical, electronic, mechanical, pneumatic, schematics, safety) and cause (did not know, misread, calculation slip).", "resources": [{ "title": "A published Car Inspector practice-question book" }] },
         { "title": "Electrical and electronic practice", "minutes": 120, "details": "Drill Ohm's law, series and parallel calculations, meter use and component questions until they are automatic.", "resources": [] },
         { "title": "Mechanical and pneumatic practice", "minutes": 120, "details": "Drill gear and lever ratios, force = pressure × area, bearing and fastener questions, and air brake operation.", "resources": [] },
         { "title": "Schematic and print reading practice", "minutes": 90, "details": "Trace circuits on practice diagrams against the clock; name each symbol; read tolerances off drawings.", "resources": [] },
@@ -523,8 +523,8 @@
       "tags": ["exam"]
     },
     {
-      "title": "How to use the passbook",
-      "body": "# Using the Car Inspector Passbook\n\nThe National Learning Corporation passbook is a bank of practice questions with answers. Use it to test yourself, not as a textbook:\n\n1. Study a topic from its study guide note first.\n2. Answer a block of questions timed, without looking at the key.\n3. Mark each miss in the error log by test area and cause.\n4. Re-study the topic, then make a flashcard in your own words for the fact you missed.\n\nDo not copy the passbook's questions into Vidya; write cards in your own words.",
+      "title": "How to use a practice-question book",
+      "body": "# Using a practice-question book\n\nA published Car Inspector study guide is a bank of practice questions with answers. Use it to test yourself, not as a textbook:\n\n1. Study a topic from its study guide note first.\n2. Answer a block of questions timed, without looking at the key.\n3. Mark each miss in the error log by test area and cause.\n4. Re-study the topic, then make a flashcard in your own words for the fact you missed.\n\nDo not copy the book's questions into Vidya; write cards in your own words.",
       "tags": ["method"]
     }
   ]
