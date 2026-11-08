@@ -29,8 +29,9 @@ class _Summary extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(statsProvider).value;
     if (s == null) return const SizedBox(height: 48);
+    final streaks = ref.watch(showStreaksProvider).value ?? false;
     return SummaryFigures([
-      ('${s.streak}', 'day streak'),
+      if (streaks) ('${s.streak}', 'day streak'),
       ('${s.todayMinutes} min', 'studied today'),
       ('${s.level}', 'level · ${s.rank}'),
     ], next: s.courses.isEmpty ? 'Add a course to start learning.' : null);

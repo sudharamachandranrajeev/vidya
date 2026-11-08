@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ui/zen.dart';
 import 'modules.dart';
 import 'providers.dart';
+import 'reminders.dart';
 
 class VidyaApp extends StatelessWidget {
   const VidyaApp({super.key, this.home = const _Root()});
@@ -39,6 +40,7 @@ class VidyaHome extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(reminderSyncProvider);
     ref.listen(celebrationsProvider, (_, list) {
       if (list.isEmpty) return;
       final text = list.length == 1

@@ -35,6 +35,9 @@ progress. Status: **early test releases**. It needs no internet and no account.
 
 - 🗺️ **A plan for any goal** – a goal holds courses, and each course holds topics. Start from a
   template (software engineer, data analyst, cloud and DevOps) or write your own.
+- 🤖 **Plans drafted by AI** – describe your goal or exam and let the AI you set up for
+  **Ask AI** write the plan, or copy Vidya's prompt into any AI chat and paste the reply back.
+  Courses with due dates, topics, study notes, skills and flashcards arrive in one go.
 - ⏱️ **Focus timer and study log** – run a quiet 15 to 60 minute timer, or log time by hand.
   Record test scores as you go.
 - 🃏 **Flashcards that stick** – cards come back just before you would forget them (spaced
@@ -150,11 +153,23 @@ Vidya opens on **Home**, with today's quests. Every screen works empty.
 3. **Tick off topics** on the course page. The course and the goal move on by themselves.
 4. **Add flashcards**: on **Review**, tap **Card**. Come back daily and tap **Begin review**.
 
-> [!NOTE]
-> The next release opens with a short welcome. It asks where your data should live: on this
-> device only, or synced through a home or cloud server. It also adds an app lock (PIN or
-> fingerprint), **Ask AI** for help finding your way, **Report a problem**, and a notice when a
-> new version is out.
+#### Import a whole study plan
+
+1. On **Learn**, tap **Import a study plan** (the list icon at the top).
+2. Get the plan one of two ways:
+   - **Make it with AI**: type your goal or exam, and optionally the syllabus or notice, your
+     weekly hours and the deadline, then tap **Write the plan**. The AI you chose for **Ask AI**
+     (a key, a local model or a coding-plan CLI; **Change** picks one) writes it, part after
+     part for a long plan. Only what you type there is sent.
+   - **Copy AI prompt**: paste it into any AI chat and fill in the brackets. Copy the whole
+     reply into the **AI reply** box; for a long plan, paste every part one after another. Or
+     tap **Open a file** for a saved `.json` plan.
+3. Check the summary (courses, topics, cards, and any missing parts), then tap **Import**.
+
+Each course's topic details and resources land in a study-guide note. Due dates count from the
+day you import. Importing the same plan again, or a part you left out, adds only what is new.
+See [`docs/examples/2026-11-08-car-inspector-7612.json`](docs/examples/2026-11-08-car-inspector-7612.json)
+for a full example: a plan for NYC Transit's Car Inspector exam 7612.
 
 ### Step 4 (optional) – Use it on more than one device
 

@@ -49,7 +49,7 @@ class AppDatabase extends _$AppDatabase with SyncedDatabase {
   ];
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -66,6 +66,10 @@ class AppDatabase extends _$AppDatabase with SyncedDatabase {
         for (final sql in _indexes.skip(3)) {
           await customStatement(sql);
         }
+      } else if (from < 3) {
+        // Version 2 cards predate media; a table made above already has them.
+        await m.addColumn(learnCards, learnCards.image);
+        await m.addColumn(learnCards, learnCards.audio);
       }
     },
   );

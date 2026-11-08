@@ -1,6 +1,7 @@
 import 'package:brahma_core/brahma_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vidya/app/app.dart';
 import 'package:vidya/app/providers.dart';
@@ -28,9 +29,13 @@ class AppHarness {
     });
   }
 
-  Future<void> run() async {
+  Future<void> run({List<Override> overrides = const []}) async {
     await tester.pumpWidget(
-      ProviderScope(overrides: vidyaOverrides(session), retry: (_, _) => null, child: const VidyaApp()),
+      ProviderScope(
+        overrides: [...vidyaOverrides(session), ...overrides],
+        retry: (_, _) => null,
+        child: const VidyaApp(),
+      ),
     );
     await settle();
   }

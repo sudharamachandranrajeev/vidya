@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:brahma_core/brahma_core.dart';
 
+import '../db/database.dart';
 import 'book.dart';
 import 'stats.dart';
 
@@ -52,3 +55,24 @@ String portfolioMarkdown(Stats s) {
   );
   return out.toString();
 }
+
+/// The flashcards as a plain, versioned JSON share file: text, deck and media
+/// references only. Schedules and review history stay on this device, so the
+/// receiver starts every card fresh. Local media paths do not travel; web
+/// addresses do.
+String decksJson(List<Flashcard> cards) => const JsonEncoder.withIndent('  ').convert({
+  'format': 'vidya-decks',
+  'version': 1,
+  'cards': [
+    for (final c in [
+      ...cards,
+    ]..sort((a, b) => a.deck != b.deck ? a.deck.compareTo(b.deck) : a.front.compareTo(b.front)))
+      {
+        'deck': c.deck,
+        'front': c.front,
+        'back': c.back,
+        if (c.image.isNotEmpty) 'image': c.image,
+        if (c.audio.isNotEmpty) 'audio': c.audio,
+      },
+  ],
+});

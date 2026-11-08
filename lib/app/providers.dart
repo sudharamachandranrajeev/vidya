@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 
 import '../db/database.dart';
 import '../domain/achievements.dart';
+import '../domain/review.dart';
 import '../domain/stats.dart';
 import '../ui/hints.dart';
 import 'session.dart';
@@ -21,6 +22,40 @@ List<Override> vidyaOverrides(AppSession session) => [
   hintTextsProvider.overrideWithValue({...coreHints, ...vidyaHints}),
   sentinelChecksProvider.overrideWithValue([...coreChecks, lockCheck]),
 ];
+
+/// Whether streaks are shown: the days-in-a-row count on Home, Progress and
+/// the suite summary. Off until the learner opts in, so nothing nags about a
+/// broken chain. Achievements are unaffected. Device-only.
+class ShowStreaks extends AsyncNotifier<bool> {
+  static const _key = 'ui.streaks';
+
+  @override
+  Future<bool> build() async => await ref.watch(sessionProvider).db.localSetting(_key) == 'on';
+
+  Future<void> set(bool on) async {
+    state = AsyncData(on);
+    await ref.read(sessionProvider).db.setLocalSetting(_key, on ? 'on' : 'off');
+  }
+}
+
+final showStreaksProvider = AsyncNotifierProvider<ShowStreaks, bool>(ShowStreaks.new);
+
+/// How hard the flashcard schedule works (see [ReviewPace]). Device-only,
+/// like the other Settings choices; cards keep the gaps they already have.
+class Pace extends AsyncNotifier<ReviewPace> {
+  static const _key = 'review.pace';
+
+  @override
+  Future<ReviewPace> build() async =>
+      ReviewPace.named(await ref.watch(sessionProvider).db.localSetting(_key));
+
+  Future<void> set(ReviewPace pace) async {
+    state = AsyncData(pace);
+    await ref.read(sessionProvider).db.setLocalSetting(_key, pace.name);
+  }
+}
+
+final reviewPaceProvider = AsyncNotifierProvider<Pace, ReviewPace>(Pace.new);
 
 /// Achievements reached by the latest write, waiting to be celebrated.
 class Celebrations extends Notifier<List<Achievement>> {

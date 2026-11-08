@@ -3920,6 +3920,26 @@ class $LearnCardsTable extends LearnCards with TableInfo<$LearnCardsTable, Flash
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<String> image = GeneratedColumn<String>(
+    'image',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _audioMeta = const VerificationMeta('audio');
+  @override
+  late final GeneratedColumn<String> audio = GeneratedColumn<String>(
+    'audio',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
   static const VerificationMeta _dueMeta = const VerificationMeta('due');
   @override
   late final GeneratedColumn<String> due = GeneratedColumn<String>(
@@ -3987,6 +4007,8 @@ class $LearnCardsTable extends LearnCards with TableInfo<$LearnCardsTable, Flash
     back,
     deck,
     courseId,
+    image,
+    audio,
     due,
     interval,
     ease,
@@ -4030,6 +4052,12 @@ class $LearnCardsTable extends LearnCards with TableInfo<$LearnCardsTable, Flash
     if (data.containsKey('course_id')) {
       context.handle(_courseIdMeta, courseId.isAcceptableOrUnknown(data['course_id']!, _courseIdMeta));
     }
+    if (data.containsKey('image')) {
+      context.handle(_imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    }
+    if (data.containsKey('audio')) {
+      context.handle(_audioMeta, audio.isAcceptableOrUnknown(data['audio']!, _audioMeta));
+    }
     if (data.containsKey('due')) {
       context.handle(_dueMeta, due.isAcceptableOrUnknown(data['due']!, _dueMeta));
     } else if (isInserting) {
@@ -4068,6 +4096,8 @@ class $LearnCardsTable extends LearnCards with TableInfo<$LearnCardsTable, Flash
       back: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}back'])!,
       deck: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}deck'])!,
       courseId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}course_id']),
+      image: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}image'])!,
+      audio: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}audio'])!,
       due: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}due'])!,
       interval: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}interval'])!,
       ease: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}ease'])!,
@@ -4092,6 +4122,11 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
   final String deck;
   final String? courseId;
 
+  /// Optional media, each a web address or a file path on this device. A
+  /// cloze card hides `{{c1::answer}}` spans in [front] instead of using [back].
+  final String image;
+  final String audio;
+
   /// The day it is next shown.
   final String due;
 
@@ -4111,6 +4146,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
     required this.back,
     required this.deck,
     this.courseId,
+    required this.image,
+    required this.audio,
     required this.due,
     required this.interval,
     required this.ease,
@@ -4130,6 +4167,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
     if (!nullToAbsent || courseId != null) {
       map['course_id'] = Variable<String>(courseId);
     }
+    map['image'] = Variable<String>(image);
+    map['audio'] = Variable<String>(audio);
     map['due'] = Variable<String>(due);
     map['interval'] = Variable<int>(interval);
     map['ease'] = Variable<double>(ease);
@@ -4148,6 +4187,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
       back: Value(back),
       deck: Value(deck),
       courseId: courseId == null && nullToAbsent ? const Value.absent() : Value(courseId),
+      image: Value(image),
+      audio: Value(audio),
       due: Value(due),
       interval: Value(interval),
       ease: Value(ease),
@@ -4167,6 +4208,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
       back: serializer.fromJson<String>(json['back']),
       deck: serializer.fromJson<String>(json['deck']),
       courseId: serializer.fromJson<String?>(json['courseId']),
+      image: serializer.fromJson<String>(json['image']),
+      audio: serializer.fromJson<String>(json['audio']),
       due: serializer.fromJson<String>(json['due']),
       interval: serializer.fromJson<int>(json['interval']),
       ease: serializer.fromJson<double>(json['ease']),
@@ -4186,6 +4229,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
       'back': serializer.toJson<String>(back),
       'deck': serializer.toJson<String>(deck),
       'courseId': serializer.toJson<String?>(courseId),
+      'image': serializer.toJson<String>(image),
+      'audio': serializer.toJson<String>(audio),
       'due': serializer.toJson<String>(due),
       'interval': serializer.toJson<int>(interval),
       'ease': serializer.toJson<double>(ease),
@@ -4203,6 +4248,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
     String? back,
     String? deck,
     Value<String?> courseId = const Value.absent(),
+    String? image,
+    String? audio,
     String? due,
     int? interval,
     double? ease,
@@ -4217,6 +4264,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
     back: back ?? this.back,
     deck: deck ?? this.deck,
     courseId: courseId.present ? courseId.value : this.courseId,
+    image: image ?? this.image,
+    audio: audio ?? this.audio,
     due: due ?? this.due,
     interval: interval ?? this.interval,
     ease: ease ?? this.ease,
@@ -4233,6 +4282,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
       back: data.back.present ? data.back.value : this.back,
       deck: data.deck.present ? data.deck.value : this.deck,
       courseId: data.courseId.present ? data.courseId.value : this.courseId,
+      image: data.image.present ? data.image.value : this.image,
+      audio: data.audio.present ? data.audio.value : this.audio,
       due: data.due.present ? data.due.value : this.due,
       interval: data.interval.present ? data.interval.value : this.interval,
       ease: data.ease.present ? data.ease.value : this.ease,
@@ -4252,6 +4303,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
           ..write('back: $back, ')
           ..write('deck: $deck, ')
           ..write('courseId: $courseId, ')
+          ..write('image: $image, ')
+          ..write('audio: $audio, ')
           ..write('due: $due, ')
           ..write('interval: $interval, ')
           ..write('ease: $ease, ')
@@ -4263,8 +4316,23 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, hlc, deleted, front, back, deck, courseId, due, interval, ease, reps, lapses, created);
+  int get hashCode => Object.hash(
+    id,
+    hlc,
+    deleted,
+    front,
+    back,
+    deck,
+    courseId,
+    image,
+    audio,
+    due,
+    interval,
+    ease,
+    reps,
+    lapses,
+    created,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4276,6 +4344,8 @@ class Flashcard extends DataClass implements Insertable<Flashcard> {
           other.back == this.back &&
           other.deck == this.deck &&
           other.courseId == this.courseId &&
+          other.image == this.image &&
+          other.audio == this.audio &&
           other.due == this.due &&
           other.interval == this.interval &&
           other.ease == this.ease &&
@@ -4292,6 +4362,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
   final Value<String> back;
   final Value<String> deck;
   final Value<String?> courseId;
+  final Value<String> image;
+  final Value<String> audio;
   final Value<String> due;
   final Value<int> interval;
   final Value<double> ease;
@@ -4307,6 +4379,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
     this.back = const Value.absent(),
     this.deck = const Value.absent(),
     this.courseId = const Value.absent(),
+    this.image = const Value.absent(),
+    this.audio = const Value.absent(),
     this.due = const Value.absent(),
     this.interval = const Value.absent(),
     this.ease = const Value.absent(),
@@ -4323,6 +4397,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
     required String back,
     this.deck = const Value.absent(),
     this.courseId = const Value.absent(),
+    this.image = const Value.absent(),
+    this.audio = const Value.absent(),
     required String due,
     this.interval = const Value.absent(),
     this.ease = const Value.absent(),
@@ -4343,6 +4419,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
     Expression<String>? back,
     Expression<String>? deck,
     Expression<String>? courseId,
+    Expression<String>? image,
+    Expression<String>? audio,
     Expression<String>? due,
     Expression<int>? interval,
     Expression<double>? ease,
@@ -4359,6 +4437,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
       if (back != null) 'back': back,
       if (deck != null) 'deck': deck,
       if (courseId != null) 'course_id': courseId,
+      if (image != null) 'image': image,
+      if (audio != null) 'audio': audio,
       if (due != null) 'due': due,
       if (interval != null) 'interval': interval,
       if (ease != null) 'ease': ease,
@@ -4377,6 +4457,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
     Value<String>? back,
     Value<String>? deck,
     Value<String?>? courseId,
+    Value<String>? image,
+    Value<String>? audio,
     Value<String>? due,
     Value<int>? interval,
     Value<double>? ease,
@@ -4393,6 +4475,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
       back: back ?? this.back,
       deck: deck ?? this.deck,
       courseId: courseId ?? this.courseId,
+      image: image ?? this.image,
+      audio: audio ?? this.audio,
       due: due ?? this.due,
       interval: interval ?? this.interval,
       ease: ease ?? this.ease,
@@ -4426,6 +4510,12 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
     }
     if (courseId.present) {
       map['course_id'] = Variable<String>(courseId.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    if (audio.present) {
+      map['audio'] = Variable<String>(audio.value);
     }
     if (due.present) {
       map['due'] = Variable<String>(due.value);
@@ -4461,6 +4551,8 @@ class LearnCardsCompanion extends UpdateCompanion<Flashcard> {
           ..write('back: $back, ')
           ..write('deck: $deck, ')
           ..write('courseId: $courseId, ')
+          ..write('image: $image, ')
+          ..write('audio: $audio, ')
           ..write('due: $due, ')
           ..write('interval: $interval, ')
           ..write('ease: $ease, ')
@@ -7614,6 +7706,8 @@ typedef $$LearnCardsTableCreateCompanionBuilder = LearnCardsCompanion Function({
   required String back,
   Value<String> deck,
   Value<String?> courseId,
+  Value<String> image,
+  Value<String> audio,
   required String due,
   Value<int> interval,
   Value<double> ease,
@@ -7630,6 +7724,8 @@ typedef $$LearnCardsTableUpdateCompanionBuilder = LearnCardsCompanion Function({
   Value<String> back,
   Value<String> deck,
   Value<String?> courseId,
+  Value<String> image,
+  Value<String> audio,
   Value<String> due,
   Value<int> interval,
   Value<double> ease,
@@ -7667,6 +7763,12 @@ class $$LearnCardsTableFilterComposer extends Composer<_$AppDatabase, $LearnCard
 
   ColumnFilters<String> get courseId =>
       $composableBuilder(column: $table.courseId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get image =>
+      $composableBuilder(column: $table.image, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get audio =>
+      $composableBuilder(column: $table.audio, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get due =>
       $composableBuilder(column: $table.due, builder: (column) => ColumnFilters(column));
@@ -7716,6 +7818,12 @@ class $$LearnCardsTableOrderingComposer extends Composer<_$AppDatabase, $LearnCa
   ColumnOrderings<String> get courseId =>
       $composableBuilder(column: $table.courseId, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get image =>
+      $composableBuilder(column: $table.image, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get audio =>
+      $composableBuilder(column: $table.audio, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get due =>
       $composableBuilder(column: $table.due, builder: (column) => ColumnOrderings(column));
 
@@ -7758,6 +7866,10 @@ class $$LearnCardsTableAnnotationComposer extends Composer<_$AppDatabase, $Learn
 
   GeneratedColumn<String> get courseId =>
       $composableBuilder(column: $table.courseId, builder: (column) => column);
+
+  GeneratedColumn<String> get image => $composableBuilder(column: $table.image, builder: (column) => column);
+
+  GeneratedColumn<String> get audio => $composableBuilder(column: $table.audio, builder: (column) => column);
 
   GeneratedColumn<String> get due => $composableBuilder(column: $table.due, builder: (column) => column);
 
@@ -7806,6 +7918,8 @@ class $$LearnCardsTableTableManager
                 Value<String> back = const Value.absent(),
                 Value<String> deck = const Value.absent(),
                 Value<String?> courseId = const Value.absent(),
+                Value<String> image = const Value.absent(),
+                Value<String> audio = const Value.absent(),
                 Value<String> due = const Value.absent(),
                 Value<int> interval = const Value.absent(),
                 Value<double> ease = const Value.absent(),
@@ -7821,6 +7935,8 @@ class $$LearnCardsTableTableManager
                 back: back,
                 deck: deck,
                 courseId: courseId,
+                image: image,
+                audio: audio,
                 due: due,
                 interval: interval,
                 ease: ease,
@@ -7838,6 +7954,8 @@ class $$LearnCardsTableTableManager
                 required String back,
                 Value<String> deck = const Value.absent(),
                 Value<String?> courseId = const Value.absent(),
+                Value<String> image = const Value.absent(),
+                Value<String> audio = const Value.absent(),
                 required String due,
                 Value<int> interval = const Value.absent(),
                 Value<double> ease = const Value.absent(),
@@ -7853,6 +7971,8 @@ class $$LearnCardsTableTableManager
                 back: back,
                 deck: deck,
                 courseId: courseId,
+                image: image,
+                audio: audio,
                 due: due,
                 interval: interval,
                 ease: ease,

@@ -62,6 +62,7 @@ class _Body extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Theme.of(context).textTheme;
+    final streaks = ref.watch(showStreaksProvider).value ?? false;
     final unlocks = [...(ref.watch(unlocksProvider).value ?? const <Unlock>[])]
       ..sort((a, b) => b.day.compareTo(a.day));
     final byKey = {for (final a in achievements) a.key: a};
@@ -89,7 +90,7 @@ class _Body extends ConsumerWidget {
                         Text('${_greeting()}.', style: t.headlineMedium),
                         const SizedBox(height: 4),
                         Text(
-                          s.streak == 0
+                          !streaks || s.streak == 0
                               ? 'One small step is enough to begin.'
                               : 'Unhurried, and unbroken for ${s.streak} ${s.streak == 1 ? 'day' : 'days'}.',
                           style: t.bodyLarge?.copyWith(color: muted(context)),
@@ -98,7 +99,10 @@ class _Body extends ConsumerWidget {
                     ),
                   ),
                 ),
-                FadeIn(delay: const Duration(milliseconds: 60), child: _LevelCard(s)),
+                FadeIn(
+                  delay: const Duration(milliseconds: 60),
+                  child: _LevelCard(s, streaks: streaks),
+                ),
                 const SizedBox(height: 16),
                 FadeIn(delay: const Duration(milliseconds: 100), child: _Quests(s)),
                 const SizedBox(height: 16),
@@ -187,14 +191,15 @@ class _Body extends ConsumerWidget {
 }
 
 class _LevelCard extends StatelessWidget {
-  const _LevelCard(this.s);
+  const _LevelCard(this.s, {required this.streaks});
   final Stats s;
+  final bool streaks;
 
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
     final stats = [
-      (Icons.local_fire_department_outlined, '${s.streak}', 'day streak'),
+      if (streaks) (Icons.local_fire_department_outlined, '${s.streak}', 'day streak'),
       (Icons.hourglass_bottom, s.hours.toStringAsFixed(s.hours < 10 ? 1 : 0), 'hours'),
       (Icons.check_circle_outline, '${s.topicsDone}', 'topics'),
     ];

@@ -1,9 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:brahma_core/brahma_core.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app/providers.dart';
 import '../db/database.dart';
+import '../domain/answer.dart';
+import '../domain/cloze.dart';
+import '../domain/export.dart';
+import '../domain/import.dart';
 import '../domain/review.dart';
 import '../domain/stats.dart';
 import 'charts.dart';
@@ -18,6 +27,20 @@ class ReviewPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => PageScaffold(
     title: 'Review',
     banner: 'page.review',
+    actions: [
+      HintIconButton(
+        'action.importDecks',
+        icon: Icons.file_open_outlined,
+        label: 'Import cards',
+        onPressed: () => _importCards(context, ref),
+      ),
+      HintIconButton(
+        'action.exportDecks',
+        icon: Icons.ios_share,
+        label: 'Export cards',
+        onPressed: () => _exportCards(context, ref),
+      ),
+    ],
     fab: FloatingActionButton.extended(
       onPressed: () => cardDialog(context, ref),
       icon: const Icon(Icons.add),
@@ -29,6 +52,49 @@ class ReviewPage extends ConsumerWidget {
       builder: (s) => _Body(s),
     ),
   );
+}
+
+/// Adds cards from a CSV, tab-separated (flashcard app text export) or Vidya file.
+Future<void> _importCards(BuildContext context, WidgetRef ref) async {
+  final file = await FilePicker.pickFile(
+    dialogTitle: 'Import cards',
+    type: FileType.custom,
+    allowedExtensions: const ['csv', 'tsv', 'txt', 'json', 'apkg'],
+  );
+  if (file == null || !context.mounted) return;
+  try {
+    final bytes = await file.readAsBytes();
+    final r = parseDeckFile(file.name, bytes);
+    final added = await ref.mutate((s) => s.book.importCards(r.cards, today: today()));
+    if (!context.mounted) return;
+    final dupes = r.cards.length - added;
+    showMessage(
+      context,
+      '$added ${added == 1 ? 'card' : 'cards'} imported'
+      '${dupes > 0 ? ', $dupes already here' : ''}${r.skipped > 0 ? ', ${r.skipped} skipped (missing a side)' : ''}.',
+    );
+  } on FormatException catch (e) {
+    if (context.mounted) showMessage(context, e.message);
+  }
+}
+
+/// Saves every card to a JSON file the learner picks the place for.
+Future<void> _exportCards(BuildContext context, WidgetRef ref) async {
+  final cards = (await ref.read(statsProvider.future)).cards;
+  if (!context.mounted) return;
+  if (cards.isEmpty) return showMessage(context, 'No cards to export yet.');
+  final saved = await FilePicker.saveFile(
+    dialogTitle: 'Export cards',
+    fileName: 'vidya-cards-${today()}.json',
+    bytes: Uint8List.fromList(utf8.encode(decksJson(cards))),
+    mimeType: 'application/json',
+  );
+  if (saved != null && context.mounted) {
+    showMessage(
+      context,
+      '${cards.length} ${cards.length == 1 ? 'card' : 'cards'} exported. Local images and audio stay on this device.',
+    );
+  }
 }
 
 class _Body extends ConsumerWidget {
@@ -178,18 +244,30 @@ Future<void> cardDialog(BuildContext context, WidgetRef ref, {Flashcard? card}) 
   if (!context.mounted) return;
   final front = TextEditingController(text: card?.front),
       back = TextEditingController(text: card?.back),
+      image = TextEditingController(text: card?.image),
+      audio = TextEditingController(text: card?.audio),
       deck = TextEditingController(text: card?.deck ?? 'General');
   final decks = {for (final c in cards) c.deck}.toList()..sort();
   await showFormDialog(
     context,
     title: card == null ? 'New card' : 'Edit card',
     fields: (setState) => [
-      Field(front, 'Front: the question', lines: 2, autofocus: true),
-      Field(back, 'Back: the answer', lines: 3),
+      Field(
+        front,
+        'Front: the question',
+        lines: 2,
+        autofocus: true,
+        hint: 'Or hide words: The capital of France is {{c1::Paris}}',
+      ),
+      Field(back, 'Back: the answer', lines: 3, hint: 'Optional when the front hides words'),
+      Field(image, 'Image', hint: 'Web address or file path'),
+      Field(audio, 'Audio', hint: 'Web address or file path'),
       Field(deck, 'Deck', hint: decks.isEmpty ? null : decks.join(', ')),
     ],
     onSave: () async {
-      if (front.text.trim().isEmpty || back.text.trim().isEmpty) return 'Fill in both sides.';
+      if (front.text.trim().isEmpty || (back.text.trim().isEmpty && !isCloze(front.text))) {
+        return 'Fill in both sides, or hide a word with {{c1::word}}.';
+      }
       await ref.mutate(
         (s) => s.book.saveCard(
           front.text.trim(),
@@ -197,6 +275,8 @@ Future<void> cardDialog(BuildContext context, WidgetRef ref, {Flashcard? card}) 
           today: today(),
           deck: deck.text.trim().ifEmpty('General'),
           courseId: card?.courseId,
+          image: image.text.trim(),
+          audio: audio.text.trim(),
           existing: card,
         ),
       );
@@ -224,6 +304,22 @@ class ReviewSession extends ConsumerStatefulWidget {
 class _ReviewSessionState extends ConsumerState<ReviewSession> {
   List<Flashcard>? _queue;
   var _shown = false, _done = 0, _busy = false;
+  final _typed = TextEditingController();
+  bool? _matched;
+
+  @override
+  void dispose() {
+    _typed.dispose();
+    super.dispose();
+  }
+
+  /// Reveals the back; if an answer was typed, says whether it matches.
+  void _reveal(Flashcard c) => setState(() {
+    _shown = true;
+    _matched = _typed.text.trim().isEmpty
+        ? null
+        : answerMatches(_typed.text, isCloze(c.front) ? clozeAnswers(c.front).join(' / ') : c.back);
+  });
 
   @override
   void initState() {
@@ -237,8 +333,9 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
     if (_busy) return;
     setState(() => _busy = true);
     final day = today();
-    await ref.mutate((s) => s.book.reviewCard(c, g, today: day));
-    final n = nextSchedule(c, g, day);
+    final pace = await ref.read(reviewPaceProvider.future);
+    await ref.mutate((s) => s.book.reviewCard(c, g, today: day, pace: pace));
+    final n = nextSchedule(c, g, day, pace: pace);
     setState(() {
       _queue!.removeAt(0);
       // Forgotten: see it again, with its new schedule, before finishing.
@@ -249,6 +346,8 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
       }
       _done++;
       _shown = false;
+      _matched = null;
+      _typed.clear();
       _busy = false;
     });
   }
@@ -289,8 +388,31 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(card.deck, style: t.labelLarge?.copyWith(color: muted(context))),
-                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(card.deck, style: t.labelLarge?.copyWith(color: muted(context))),
+                              ),
+                              TextButton.icon(
+                                onPressed: () => showDialog<void>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Why this card now?'),
+                                    content: Text(dueReason(card, today())),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                icon: const Icon(Icons.help_outline, size: 18),
+                                label: const Text('Why now?'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
                           Expanded(
                             child: Card(
                               child: Padding(
@@ -299,13 +421,43 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     children: [
-                                      SelectableText(card.front, style: t.headlineSmall),
+                                      if (card.image.isNotEmpty) _CardImage(card.image),
+                                      SelectableText(
+                                        isCloze(card.front)
+                                            ? (_shown ? clozeAnswer(card.front) : clozeQuestion(card.front))
+                                            : card.front,
+                                        style: t.headlineSmall,
+                                      ),
+                                      if (card.audio.isNotEmpty)
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: TextButton.icon(
+                                            onPressed: () => openLink(context, _mediaUri(card.audio)),
+                                            icon: const Icon(Icons.volume_up_outlined),
+                                            label: const Text('Play audio'),
+                                          ),
+                                        ),
                                       if (_shown) ...[
                                         Padding(
                                           padding: const EdgeInsets.symmetric(vertical: 20),
                                           child: Divider(color: hairline(context)),
                                         ),
-                                        SelectableText(card.back, style: t.titleMedium),
+                                        if (_matched != null)
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 12),
+                                            child: Text(
+                                              _matched!
+                                                  ? 'Your answer matches.'
+                                                  : 'Compare with your answer.',
+                                              style: t.labelLarge?.copyWith(
+                                                color: _matched!
+                                                    ? Theme.of(context).colorScheme.primary
+                                                    : muted(context),
+                                              ),
+                                            ),
+                                          ),
+                                        if (card.back.isNotEmpty)
+                                          SelectableText(card.back, style: t.titleMedium),
                                       ],
                                     ],
                                   ),
@@ -314,12 +466,19 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          if (!_shown)
-                            FilledButton(
-                              onPressed: () => setState(() => _shown = true),
-                              child: const Text('Show answer'),
-                            )
-                          else
+                          if (!_shown) ...[
+                            TextField(
+                              controller: _typed,
+                              decoration: const InputDecoration(
+                                labelText: 'Type your answer (optional)',
+                                helperText: 'Capitals, spacing and punctuation do not matter.',
+                              ),
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (_) => _reveal(card),
+                            ),
+                            const SizedBox(height: 12),
+                            FilledButton(onPressed: () => _reveal(card), child: const Text('Show answer')),
+                          ] else
                             Row(
                               children: [
                                 for (final g in Grade.values)
@@ -342,15 +501,44 @@ class _ReviewSessionState extends ConsumerState<ReviewSession> {
   }
 }
 
-class _GradeButton extends StatelessWidget {
+bool _isWeb(String ref) => ref.startsWith('http://') || ref.startsWith('https://');
+
+/// A web address as it is, a device path as a file address.
+String _mediaUri(String ref) => _isWeb(ref) ? ref : Uri.file(ref).toString();
+
+class _CardImage extends StatelessWidget {
+  const _CardImage(this.source);
+  final String source;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget missing(BuildContext _, Object _, StackTrace? _) =>
+        Text('Image not found: $source', style: TextStyle(color: muted(context)));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 240),
+        child: Semantics(
+          label: 'Card image',
+          child: _isWeb(source)
+              ? Image.network(source, errorBuilder: missing)
+              : Image.file(File(source), errorBuilder: missing),
+        ),
+      ),
+    );
+  }
+}
+
+class _GradeButton extends ConsumerWidget {
   const _GradeButton(this.card, this.grade, {required this.onPressed});
   final Flashcard card;
   final Grade grade;
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    final days = nextSchedule(card, grade, today()).interval;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pace = ref.watch(reviewPaceProvider).value ?? ReviewPace.standard;
+    final days = nextSchedule(card, grade, today(), pace: pace).interval;
     final when = days == 0 ? 'today' : '${days}d';
     final child = Column(
       mainAxisSize: MainAxisSize.min,

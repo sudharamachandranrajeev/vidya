@@ -57,3 +57,6 @@ key.properties
 
 # Local checkout of brahma_core (see pubspec.yaml)
 pubspec_overrides.yaml
+
+# Competitor review research: scraped third-party reviews, kept local only
+replica/

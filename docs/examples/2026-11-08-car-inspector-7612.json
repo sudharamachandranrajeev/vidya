@@ -1,0 +1,531 @@
+{
+  "format": "vidya-curriculum",
+  "version": 1,
+  "part": "1 of 1",
+  "program": {
+    "title": "Car Inspector — NYC Transit Exam 7612",
+    "goal": "Qualify for MTA New York City Transit's Car Inspector (Subway Car Mechanic) list: file the application and Education and Experience Exam by 28 Nov 2026, pass the qualifying multiple-choice test (expected from 23 Jan 2027) and score high on the competitive practical skills test.",
+    "targetDate": "2027-01-23"
+  },
+  "courses": [
+    {
+      "title": "Apply and file the Education and Experience Exam",
+      "kind": "practice",
+      "hours": 4,
+      "provider": "MTA New York City Transit — Notice of Examination No. 7612",
+      "url": "https://www.mta.info/document/226241",
+      "startWeek": 0,
+      "dueWeek": 2,
+      "summary": "Nothing else counts if the application is late. The application period is 1–28 Nov 2026 and the Education and Experience Exam (EEE) must be final-submitted in OASys by midnight Eastern time on 28 Nov 2026.",
+      "topics": [
+        {
+          "title": "Read the Notice of Examination end to end",
+          "minutes": 30,
+          "details": "Note the dates (apply 1–28 Nov 2026; multiple-choice testing expected from Sat 23 Jan 2027), the fee ($91, plus 2.95% if paid by card), the test areas, the 65% pass mark on both tests, and that the practical score sets list order. The same list may fill Road Car Inspector vacancies.",
+          "resources": [{ "title": "Notice of Examination No. 7612", "url": "https://www.mta.info/document/226241" }]
+        },
+        {
+          "title": "Check your qualifying experience",
+          "minutes": 45,
+          "details": "You need 3 years full-time journey-level mechanic experience working from drawings on heavy electromechanical, electric or electronic equipment or on multiple-unit electric railcars or diesel-electric locomotives — or 2 years of that plus one of: 2 years as helper/apprentice, a 600-hour trade or technical school course, a vocational high school major, or an AAS degree in the field. List each job with dates, hours per week and the equipment you worked on.",
+          "resources": []
+        },
+        {
+          "title": "Convert part-time experience",
+          "minutes": 15,
+          "details": "Part-time (under 35 hours a week) converts as (hours per week ÷ 35) × months worked. Example: 21 hours a week for 12 months = 21/35 × 12 = 7.2 months full-time.",
+          "resources": []
+        },
+        {
+          "title": "Create the OASys account, apply and pay",
+          "minutes": 45,
+          "details": "Apply online in OASys with a unique email address. New accounts are verified, and problem accounts can take about five business days, so do this early. Pay by credit or debit card. A fee waiver request (public assistance or veteran) must reach the Examinations Unit by mail by 14 Dec 2026.",
+          "resources": [{ "title": "OASys — MTA exams", "url": "https://a856-mtaexams.nyc.gov/OASysWeb/home" }]
+        },
+        {
+          "title": "Final-submit the Education and Experience Exam",
+          "minutes": 60,
+          "details": "Describe all relevant education and experience in detail, then Final Submit. After that nothing can be added. Missing the 28 Nov 2026 midnight deadline means no score and no refund. Keep the emailed receipt.",
+          "resources": []
+        },
+        {
+          "title": "Request accommodations or an alternate date if needed",
+          "minutes": 15,
+          "details": "Religious-observance alternate dates: request at least 15 days before testing starts. Disability accommodations: at least 30 days before. Use the Special Circumstances Guide.",
+          "resources": [{ "title": "MTA NYCT exam forms and instructions", "url": "http://web.mta.info/nyct/hr/forms_instructions.htm" }]
+        }
+      ]
+    },
+    {
+      "title": "Shop safety, tools and measurement",
+      "kind": "course",
+      "hours": 10,
+      "startWeek": 0,
+      "dueWeek": 2,
+      "summary": "Every test area says 'utilizing safe work practices'. Safe procedure is often the deciding detail in a multiple-choice answer and is watched closely in the practical.",
+      "topics": [
+        {
+          "title": "Lockout/tagout and verifying zero energy",
+          "minutes": 60,
+          "details": "Shut down, isolate every energy source (electrical, pneumatic, stored spring or gravity), apply your own lock and tag, release stored energy (bleed air, discharge capacitors, block raised parts), then verify: try to start it and test for voltage. Use live-dead-live: prove the tester on a known live source, test the circuit, then prove the tester again.",
+          "resources": [{ "title": "OSHA — Control of Hazardous Energy (Lockout/Tagout)", "url": "https://www.osha.gov/control-hazardous-energy" }]
+        },
+        {
+          "title": "Third rail and track safety",
+          "minutes": 30,
+          "details": "Treat the third rail as always energized (NYC Transit's runs at roughly 600 volts DC). Never step on it or on its protection board; keep tools and long objects clear. Work under cars in pits and yards only under the flagging and blue-signal protections your supervisor sets.",
+          "resources": []
+        },
+        {
+          "title": "Personal protective equipment",
+          "minutes": 30,
+          "details": "Safety glasses, gloves suited to the task, hearing protection, safety shoes, high-visibility vest on the right of way, and insulated gloves rated for the voltage when work near live parts is unavoidable. Remove rings and watches before electrical work.",
+          "resources": []
+        },
+        {
+          "title": "Hand and power tools",
+          "minutes": 60,
+          "details": "Choose the right tool: box or socket wrenches before open-end on tight fasteners; never extend a wrench with a pipe; pull rather than push a wrench. Inspect cords and insulation. A torque wrench tightens to a specification; return a click-type wrench to its lowest setting for storage.",
+          "resources": []
+        },
+        {
+          "title": "Precision measurement",
+          "minutes": 90,
+          "details": "Outside micrometer: read the sleeve (0.025 in per line) plus the thimble (0.001 in per division). Vernier and dial calipers measure inside, outside and depth to 0.001 in. Feeler gauges measure gaps; dial indicators measure runout. Clean the faces and check zero before measuring.",
+          "resources": []
+        },
+        {
+          "title": "Reading gauges and meters",
+          "minutes": 45,
+          "details": "Read the scale's smallest division first, read straight on to avoid parallax, and note units (psi, bar, volts, amps). Gauge pressure (psig) reads zero at atmosphere; absolute pressure (psia) = psig + 14.7.",
+          "resources": []
+        },
+        {
+          "title": "Lifting, jacking and rigging",
+          "minutes": 45,
+          "details": "Never work under a load held only by a jack or hoist — use rated stands or blocking. Check the rated capacity, inspect slings and hooks, keep the load low and controlled, and stay out from under it. Lift with your legs and keep loads close to the body.",
+          "resources": []
+        },
+        {
+          "title": "Fire safety",
+          "minutes": 20,
+          "details": "In the US, Class A is ordinary combustibles, B flammable liquids, C energized electrical equipment, D combustible metals. Never use water on an electrical fire; de-energize if you safely can.",
+          "resources": []
+        }
+      ]
+    },
+    {
+      "title": "Electrical equipment and principles",
+      "kind": "course",
+      "hours": 20,
+      "startWeek": 1,
+      "dueWeek": 4,
+      "summary": "Test area 1: knowledge of electrical devices and principles; installing, maintaining, testing with standard equipment and repairing them. Example task in the notice: using a multimeter to measure the voltage in a circuit.",
+      "topics": [
+        {
+          "title": "Ohm's law and power",
+          "minutes": 90,
+          "details": "V = I × R; I = V ÷ R; R = V ÷ I. Power P = V × I = I²R = V²/R. Practise rearranging and solving with a four-function calculator, since only that kind is allowed in the test.",
+          "resources": [{ "title": "Lessons in Electric Circuits, Vol. I (DC)", "url": "https://www.allaboutcircuits.com/textbook/" }]
+        },
+        {
+          "title": "Series, parallel and combination circuits",
+          "minutes": 120,
+          "details": "Series: same current everywhere, resistances add, voltage divides. Parallel: same voltage across each branch, currents add, total resistance is less than the smallest branch (two equal resistors give half). Kirchhoff's voltage law: drops around a loop equal the source; current law: current into a junction equals current out.",
+          "resources": []
+        },
+        {
+          "title": "Using a multimeter safely",
+          "minutes": 120,
+          "details": "Voltage: meter in parallel across the part, circuit live. Current: meter in series, leads in the amps jack, never across a source. Resistance and continuity: circuit de-energized and isolated. Start on the highest range if not auto-ranging; check meter category (CAT) rating for the circuit.",
+          "resources": []
+        },
+        {
+          "title": "Finding opens, shorts and grounds",
+          "minutes": 90,
+          "details": "An open in a live series circuit drops the full source voltage across the break (an open fuse reads supply voltage across it). A short gives near-zero resistance and high current that blows fuses or trips breakers. A ground fault is an unintended path to the car body or ground; insulation resistance testers (meggers) find weak insulation.",
+          "resources": []
+        },
+        {
+          "title": "AC fundamentals",
+          "minutes": 90,
+          "details": "Frequency in hertz; RMS value = 0.707 × peak, so 120 V RMS peaks near 170 V. Inductors oppose changes in current; capacitors oppose changes in voltage. Transformers change voltage by the turns ratio and work only on AC.",
+          "resources": []
+        },
+        {
+          "title": "Magnetism, relays, contactors and solenoids",
+          "minutes": 90,
+          "details": "A current-carrying coil makes a magnetic field. A relay lets a small control current switch a separate circuit; a contactor is a heavy-duty relay for motor and power circuits; a solenoid turns the coil's pull into straight-line motion, as in valve operators. Normally open contacts close when the coil is energized; normally closed contacts open.",
+          "resources": []
+        },
+        {
+          "title": "Motors and generators",
+          "minutes": 90,
+          "details": "DC series motors give very high starting torque and were the classic traction motor. Modern subway cars use AC induction traction motors fed by inverters. Reversing a DC motor means reversing armature or field current, not both. Generators and alternators turn motion into electricity.",
+          "resources": []
+        },
+        {
+          "title": "Batteries, wiring and circuit protection",
+          "minutes": 90,
+          "details": "Cells in series add voltage; in parallel add capacity. In the AWG system, a larger gauge number means a thinner wire with more resistance. Fuses melt once; breakers trip and reset. Size protection to the wire, not the load. Long runs cause voltage drop.",
+          "resources": []
+        }
+      ]
+    },
+    {
+      "title": "Electronic equipment and troubleshooting",
+      "kind": "course",
+      "hours": 14,
+      "startWeek": 3,
+      "dueWeek": 6,
+      "summary": "Test area 2: knowledge of electronic devices and principles; testing and repairing them. Example task in the notice: troubleshooting a circuit to find a defect.",
+      "topics": [
+        {
+          "title": "Resistors, capacitors and colour codes",
+          "minutes": 60,
+          "details": "Four-band resistor code: first two bands are digits, third is the multiplier, fourth the tolerance (brown-black-red = 1,000 Ω; gold = ±5%). Capacitors store charge; electrolytics are polarised and must be fitted the right way round.",
+          "resources": []
+        },
+        {
+          "title": "Diodes and rectifiers",
+          "minutes": 90,
+          "details": "A diode conducts when its anode is more positive than its cathode (forward bias), dropping about 0.7 V for silicon. A meter's diode test shows a reading one way and OL the other on a good diode. A full-wave bridge uses four diodes; a capacitor smooths the output; a regulator holds it steady.",
+          "resources": []
+        },
+        {
+          "title": "Transistors as switches",
+          "minutes": 90,
+          "details": "A small base (or gate) signal controls a larger collector-emitter (drain-source) current. In switching use the transistor is either cut off (off) or saturated (on). Power devices such as IGBTs switch the high currents in propulsion inverters and auxiliary power supplies.",
+          "resources": []
+        },
+        {
+          "title": "LEDs and indicator circuits",
+          "minutes": 45,
+          "details": "An LED needs a series resistor: R = (supply − LED voltage) ÷ current. Example: (12 V − 2 V) ÷ 0.02 A = 500 Ω. Reverse polarity and it stays dark.",
+          "resources": []
+        },
+        {
+          "title": "Digital logic basics",
+          "minutes": 90,
+          "details": "AND: output 1 only when all inputs are 1. OR: output 1 when any input is 1. NOT inverts. NAND and NOR are AND and OR followed by NOT. Binary place values are 8-4-2-1, so 1010 = 10. Truth tables are the fastest way to answer gate questions.",
+          "resources": []
+        },
+        {
+          "title": "Inverters, converters and power supplies",
+          "minutes": 60,
+          "details": "An inverter turns DC into AC (propulsion, lighting, air-conditioning supplies); a converter changes one DC level to another; a rectifier turns AC into DC. Low-voltage battery and control circuits run from these supplies.",
+          "resources": []
+        },
+        {
+          "title": "Systematic troubleshooting",
+          "minutes": 90,
+          "details": "Confirm the complaint, check the obvious (power, fuses, connectors), then split the circuit in half and test the midpoint to see which half holds the fault; repeat. Compare readings with the schematic's expected values. Change one thing at a time and re-test after the repair.",
+          "resources": []
+        },
+        {
+          "title": "Electrostatic discharge and the oscilloscope",
+          "minutes": 45,
+          "details": "Wear a grounded wrist strap and use anti-static bags for circuit boards. An oscilloscope draws voltage against time, showing waveform shape, frequency and noise that a meter cannot.",
+          "resources": []
+        }
+      ]
+    },
+    {
+      "title": "Mechanical equipment and principles",
+      "kind": "course",
+      "hours": 14,
+      "startWeek": 4,
+      "dueWeek": 7,
+      "summary": "Test area 3: knowledge of mechanical devices and principles; installing, maintaining and repairing them. Example task in the notice: repairing a piece of equipment that has stopped working.",
+      "topics": [
+        {
+          "title": "Levers, mechanical advantage and torque",
+          "minutes": 90,
+          "details": "Lever mechanical advantage = effort arm ÷ load arm. Torque = force × distance from the pivot: 50 lb on a 2 ft bar = 100 lb-ft. Brake rigging uses levers to multiply cylinder force at the shoes.",
+          "resources": [{ "title": "HyperPhysics — mechanics", "url": "http://hyperphysics.phy-astr.gsu.edu/hbase/hframe.html" }]
+        },
+        {
+          "title": "Gears, belts and pulleys",
+          "minutes": 90,
+          "details": "Gear ratio = driven teeth ÷ driver teeth. A 20-tooth gear driving a 60-tooth gear turns it at one third the speed with three times the torque. Meshing gears turn in opposite directions; an idler restores direction. For pulleys, diameter × rpm is equal on both.",
+          "resources": []
+        },
+        {
+          "title": "Bearings and lubrication",
+          "minutes": 90,
+          "details": "Ball bearings suit lighter, faster loads; roller bearings carry heavier radial loads; tapered roller bearings take radial and thrust loads, as in journal bearings. Over-greasing causes heat as much as under-greasing does. Warning signs: noise, heat, discoloured grease, play.",
+          "resources": []
+        },
+        {
+          "title": "Fasteners and locking devices",
+          "minutes": 60,
+          "details": "Coarse (UNC) threads assemble quickly and resist stripping; fine (UNF) threads hold against vibration and allow finer adjustment. Lock with lock washers, lock nuts, cotter pins or safety wire, and replace single-use locking parts. Tighten in a cross pattern to the specified torque.",
+          "resources": []
+        },
+        {
+          "title": "Trucks, wheels and suspension",
+          "minutes": 90,
+          "details": "The truck holds the wheelsets, traction motors, gear units, brakes and suspension under each car end. Primary springs sit between the axle journals and the truck frame; secondary springs (often air bags) carry the car body on the truck. A locked, sliding wheel wears flat spots that pound and must be found and repaired.",
+          "resources": []
+        },
+        {
+          "title": "Couplers, doors and car body equipment",
+          "minutes": 60,
+          "details": "Couplers join cars mechanically and often carry electrical and air connections. Door systems combine motors or air engines, linkages, limit switches and safety interlocks that prove doors are closed before the train can take power.",
+          "resources": []
+        },
+        {
+          "title": "Heating, ventilation and air conditioning",
+          "minutes": 60,
+          "details": "Refrigeration cycle: the compressor raises refrigerant pressure and temperature; the condenser rejects heat; the expansion device drops pressure; the evaporator absorbs heat from the car's air. Dirty coils and filters, low charge and failed fans are the common faults.",
+          "resources": []
+        }
+      ]
+    },
+    {
+      "title": "Pneumatic equipment and air brakes",
+      "kind": "course",
+      "hours": 14,
+      "startWeek": 5,
+      "dueWeek": 8,
+      "summary": "Test area 4: knowledge of pneumatic devices and principles; installing, testing and repairing them. Example task in the notice: troubleshooting a piece of equipment running under normal operating pressure.",
+      "topics": [
+        {
+          "title": "Pressure, force and the gas laws",
+          "minutes": 90,
+          "details": "Force = pressure × area: 100 psi on a 10 sq in piston = 1,000 lb. Pascal's law: pressure in a confined fluid acts equally in all directions. Boyle's law: at constant temperature P1 × V1 = P2 × V2, so halving volume doubles absolute pressure. psia = psig + 14.7.",
+          "resources": []
+        },
+        {
+          "title": "Compressed air supply",
+          "minutes": 90,
+          "details": "The compressor fills the main reservoir; a governor or pressure switch starts it at the cut-in pressure and stops it at cut-out. Aftercoolers and air dryers remove moisture; reservoirs need draining. A safety (relief) valve vents if pressure rises past its setting.",
+          "resources": [{ "title": "New York State CDL Manual — Air Brakes section (principles of compressors, governors, reservoirs)" }]
+        },
+        {
+          "title": "Valves and cylinders",
+          "minutes": 90,
+          "details": "A check valve lets air flow one way only. Directional valves are named by ports and positions (a 3/2 valve has 3 ports, 2 positions). Solenoid valves let electrical signals control air. A single-acting cylinder returns by spring; a double-acting cylinder is powered both ways.",
+          "resources": []
+        },
+        {
+          "title": "Automatic air brake principles",
+          "minutes": 120,
+          "details": "Brake pipe pressure is kept charged along the train. A reduction in brake pipe pressure applies the brakes; restoring it releases them. If the train parts or a hose bursts, the pressure loss applies the brakes in emergency — the system fails safe. Electro-pneumatic brakes on modern cars send the same commands electrically for faster, even response.",
+          "resources": []
+        },
+        {
+          "title": "Brake rigging, cylinders and shoes",
+          "minutes": 60,
+          "details": "Brake cylinders turn air pressure into force; levers and rods multiply it to the shoes or pads. Slack adjusters take up clearance as shoes wear so cylinder travel stays in limits. Check shoe thickness, pins, cotter keys and piston travel.",
+          "resources": []
+        },
+        {
+          "title": "Finding leaks and pressure faults",
+          "minutes": 90,
+          "details": "Listen first, then brush soapy water on fittings and watch for bubbles. Compare gauge readings with the specified values and watch how fast pressure drops with the compressor stopped. Always bleed pressure off before opening a line or removing a component, and keep your face clear of hoses.",
+          "resources": []
+        }
+      ]
+    },
+    {
+      "title": "Schematics, manuals and drawings",
+      "kind": "course",
+      "hours": 12,
+      "startWeek": 6,
+      "dueWeek": 9,
+      "summary": "Test area 5: reading electrical, electronic, mechanical and pneumatic manuals; using procedures, wiring diagrams, schematics and drawings. Example task in the notice: tracing a circuit to find out how it is wired.",
+      "topics": [
+        {
+          "title": "Electrical and electronic symbols",
+          "minutes": 90,
+          "details": "Learn by sight: battery, ground, fuse, breaker, resistor, capacitor, inductor, diode, LED, transistor, lamp, motor, relay coil, normally open and normally closed contacts, switch, transformer. Schematics show contacts in their de-energized (shelf) state.",
+          "resources": []
+        },
+        {
+          "title": "Tracing circuits and wiring diagrams",
+          "minutes": 120,
+          "details": "Follow current from the source through each protective device, switch and contact to the load and back. Use wire numbers and terminal designations to jump between sheets. Ask: what must be closed for this load to get power? That list is your troubleshooting path.",
+          "resources": []
+        },
+        {
+          "title": "Ladder and relay logic",
+          "minutes": 90,
+          "details": "The two side rails are the power supply; each rung is one circuit, inputs on the left and the output (coil, lamp, solenoid) on the right. Contacts in series mean AND; contacts in parallel mean OR. A seal-in (holding) contact keeps a coil energized after a start button is released.",
+          "resources": []
+        },
+        {
+          "title": "Pneumatic schematics",
+          "minutes": 60,
+          "details": "Squares are valve positions with arrows showing flow; a circle with a hollow triangle is a pneumatic compressor or motor (solid triangles mean hydraulic). Springs, solenoids and pilot lines on the ends show how a valve is shifted.",
+          "resources": []
+        },
+        {
+          "title": "Mechanical drawings",
+          "minutes": 90,
+          "details": "Orthographic views (front, top, side) show the part; dashed lines are hidden edges; long-short chain lines are centre lines. Tolerance 1.500 ± 0.005 in accepts 1.495 to 1.505 in. Scale 1:2 means the drawing is half full size — read the dimensions, never measure the print.",
+          "resources": []
+        },
+        {
+          "title": "Using procedural manuals",
+          "minutes": 60,
+          "details": "Read the whole procedure and its warnings and cautions before starting; warnings protect people, cautions protect equipment. Do steps in order, use the specified values and tools, and record readings and work done in the report.",
+          "resources": []
+        }
+      ]
+    },
+    {
+      "title": "Practice tests and review",
+      "kind": "practice",
+      "hours": 14,
+      "provider": "A published Car Inspector practice-question book and your own notes",
+      "startWeek": 8,
+      "dueWeek": 10,
+      "summary": "Work timed practice sets, mark every wrong answer to its test area and topic, and review those topics. Aim for well above the 65% pass mark.",
+      "topics": [
+        { "title": "Diagnostic practice set and error log", "minutes": 90, "details": "Take a full timed set cold. Log each miss by test area (electrical, electronic, mechanical, pneumatic, schematics, safety) and cause (did not know, misread, calculation slip).", "resources": [{ "title": "A published Car Inspector practice-question book" }] },
+        { "title": "Electrical and electronic practice", "minutes": 120, "details": "Drill Ohm's law, series and parallel calculations, meter use and component questions until they are automatic.", "resources": [] },
+        { "title": "Mechanical and pneumatic practice", "minutes": 120, "details": "Drill gear and lever ratios, force = pressure × area, bearing and fastener questions, and air brake operation.", "resources": [] },
+        { "title": "Schematic and print reading practice", "minutes": 90, "details": "Trace circuits on practice diagrams against the clock; name each symbol; read tolerances off drawings.", "resources": [] },
+        { "title": "Full timed practice test", "minutes": 150, "details": "Simulate test conditions: four-function calculator only, no phone, answer every question.", "resources": [] },
+        { "title": "Final weak-area review", "minutes": 120, "details": "Re-read the study guides for the topics still in your error log; clear the flashcard queue each day in the last week.", "resources": [] },
+        { "title": "Test-day logistics", "minutes": 30, "details": "Print the Admission Letter (in OASys 14 days before testing). Bring one valid photo and signature ID with the name you applied under, and a four-function calculator. No phones, smart watches or other devices in the building.", "resources": [] }
+      ]
+    },
+    {
+      "title": "Practical skills test preparation",
+      "kind": "practice",
+      "hours": 12,
+      "startWeek": 9,
+      "dueWeek": 12,
+      "summary": "The practical skills test is competitive: its score sets your place on the eligible list. Practise hands-on tasks that match the five test areas, working safely and narrating your checks.",
+      "topics": [
+        { "title": "Meter work on a live and a dead circuit", "minutes": 90, "details": "Measure voltage, current and resistance on a training board; prove the meter live-dead-live; choose ranges correctly.", "resources": [] },
+        { "title": "Wire and test a relay control circuit", "minutes": 120, "details": "Build a start/stop circuit with a seal-in contact from a ladder diagram, then fault-find a planted open and short.", "resources": [] },
+        { "title": "Trace a circuit from a schematic", "minutes": 90, "details": "Given a drawing and a panel, identify wire numbers and terminals and predict readings before measuring.", "resources": [] },
+        { "title": "Pneumatic leak and pressure fault finding", "minutes": 90, "details": "Find leaks with soapy water on a pressurised rig; check a relief valve setting; bleed down before disconnecting.", "resources": [] },
+        { "title": "Precision measuring and mechanical repair", "minutes": 90, "details": "Measure parts with a micrometer and caliper against a drawing's tolerances; replace and torque fasteners with proper locking.", "resources": [] },
+        { "title": "Work safely and report clearly", "minutes": 60, "details": "Wear PPE, lock out, verify zero energy, keep the work area clean, and write a short report of the fault, cause and repair.", "resources": [] }
+      ]
+    }
+  ],
+  "skills": [
+    { "name": "Electrical troubleshooting", "category": "Electrical", "target": 4 },
+    { "name": "Electronics", "category": "Electrical", "target": 3 },
+    { "name": "Mechanical systems", "category": "Mechanical", "target": 4 },
+    { "name": "Pneumatics and air brakes", "category": "Mechanical", "target": 4 },
+    { "name": "Schematic and print reading", "category": "Technical reading", "target": 4 },
+    { "name": "Precision measurement", "category": "Mechanical", "target": 4 },
+    { "name": "Shop safety", "category": "Safety", "target": 5 }
+  ],
+  "cards": [
+    { "course": "Apply and file the Education and Experience Exam", "front": "Exam 7612: last day to apply and Final Submit the Education and Experience Exam?", "back": "28 November 2026, by midnight Eastern time, in OASys." },
+    { "course": "Apply and file the Education and Experience Exam", "front": "Convert 21 hours a week for 12 months into full-time months.", "back": "21 ÷ 35 × 12 = 7.2 months." },
+    { "course": "Apply and file the Education and Experience Exam", "front": "Pass mark for the qualifying multiple-choice test and the competitive practical test?", "back": "65% on each. The practical score sets your place on the list." },
+    { "course": "Apply and file the Education and Experience Exam", "front": "What kind of calculator is allowed at the test site?", "back": "Hand-held, battery or solar, numeric only, with just add, subtract, multiply and divide." },
+    { "course": "Apply and file the Education and Experience Exam", "front": "Deadline to mail fee waiver documentation?", "back": "14 December 2026." },
+
+    { "course": "Shop safety, tools and measurement", "front": "Live-dead-live: what is it?", "back": "Prove the tester on a known live source, test the circuit you will work on, then prove the tester live again." },
+    { "course": "Shop safety, tools and measurement", "front": "After applying your lock and tag, what must you do before starting work?", "back": "Release stored energy (bleed air, discharge, block) and verify zero energy by testing and trying to start the equipment." },
+    { "course": "Shop safety, tools and measurement", "front": "How should you treat the third rail?", "back": "As always energized. Never step on it or its protection board; keep tools clear." },
+    { "course": "Shop safety, tools and measurement", "front": "Fire class for energized electrical equipment (US)?", "back": "Class C. Never use water." },
+    { "course": "Shop safety, tools and measurement", "front": "Is it safe to work under a load held only by a jack?", "back": "No. Support it on rated stands or blocking first." },
+    { "course": "Shop safety, tools and measurement", "front": "Outside micrometer: what does one sleeve line and one thimble division each represent (inch)?", "back": "Sleeve line 0.025 in; thimble division 0.001 in." },
+    { "course": "Shop safety, tools and measurement", "front": "Pressure: psia = psig + {{c1::14.7}}", "back": "" },
+    { "course": "Shop safety, tools and measurement", "front": "Which tool measures the gap between two close surfaces, such as a clearance?", "back": "A feeler gauge." },
+    { "course": "Shop safety, tools and measurement", "front": "Why pull a wrench rather than push it?", "back": "If it slips you will not drive your hand into the work." },
+
+    { "course": "Electrical equipment and principles", "front": "Ohm's law: V = {{c1::I × R}}", "back": "" },
+    { "course": "Electrical equipment and principles", "front": "Three ways to write electrical power.", "back": "P = V × I = I²R = V²/R" },
+    { "course": "Electrical equipment and principles", "front": "Two 10 Ω resistors in parallel: total resistance?", "back": "5 Ω." },
+    { "course": "Electrical equipment and principles", "front": "What is the same everywhere in a series circuit? In a parallel circuit?", "back": "Series: current. Parallel: voltage across each branch." },
+    { "course": "Electrical equipment and principles", "front": "How is a meter connected to measure current? Voltage?", "back": "Current: in series. Voltage: in parallel across the part." },
+    { "course": "Electrical equipment and principles", "front": "When may you measure resistance?", "back": "Only with the circuit de-energized and the part isolated." },
+    { "course": "Electrical equipment and principles", "front": "In a live series circuit, what do you read across a blown fuse?", "back": "About the full supply voltage." },
+    { "course": "Electrical equipment and principles", "front": "A continuity test reads OL. What does that mean?", "back": "Open circuit — no continuous path." },
+    { "course": "Electrical equipment and principles", "front": "Which instrument tests insulation resistance?", "back": "A megohmmeter (megger)." },
+    { "course": "Electrical equipment and principles", "front": "Kirchhoff's voltage law?", "back": "The voltage drops around any closed loop add up to the source voltage." },
+    { "course": "Electrical equipment and principles", "front": "AWG: is 10 gauge wire thicker or thinner than 14 gauge?", "back": "Thicker. A smaller gauge number means a thicker wire." },
+    { "course": "Electrical equipment and principles", "front": "120 V AC (RMS) peaks at about?", "back": "170 V (120 × 1.414)." },
+    { "course": "Electrical equipment and principles", "front": "An inductor opposes changes in {{c1::current}}; a capacitor opposes changes in {{c2::voltage}}.", "back": "" },
+    { "course": "Electrical equipment and principles", "front": "What does a relay let you do?", "back": "Switch one circuit with a small control current in another (the coil)." },
+    { "course": "Electrical equipment and principles", "front": "Normally open contacts do what when the coil is energized?", "back": "They close." },
+    { "course": "Electrical equipment and principles", "front": "Which DC motor type gives very high starting torque, classic for traction?", "back": "The series-wound DC motor." },
+    { "course": "Electrical equipment and principles", "front": "How do you reverse a DC motor?", "back": "Reverse the current in the armature or in the field — not both." },
+    { "course": "Electrical equipment and principles", "front": "Batteries in series add {{c1::voltage}}; in parallel they add {{c2::capacity (amp-hours)}}.", "back": "" },
+    { "course": "Electrical equipment and principles", "front": "A circuit draws 2 A from 24 V. Resistance and power?", "back": "12 Ω and 48 W." },
+
+    { "course": "Electronic equipment and troubleshooting", "front": "Resistor bands brown, black, red, gold?", "back": "1,000 Ω ± 5%." },
+    { "course": "Electronic equipment and troubleshooting", "front": "When does a diode conduct, and with what drop (silicon)?", "back": "When forward biased (anode positive to cathode), dropping about 0.7 V." },
+    { "course": "Electronic equipment and troubleshooting", "front": "How many diodes in a full-wave bridge rectifier?", "back": "Four." },
+    { "course": "Electronic equipment and troubleshooting", "front": "What does the filter capacitor after a rectifier do?", "back": "Smooths the pulsing DC." },
+    { "course": "Electronic equipment and troubleshooting", "front": "A transistor used as a switch works in which two states?", "back": "Cut off (off) and saturated (on)." },
+    { "course": "Electronic equipment and troubleshooting", "front": "Series resistor for a 2 V, 20 mA LED on 12 V?", "back": "(12 − 2) ÷ 0.02 = 500 Ω." },
+    { "course": "Electronic equipment and troubleshooting", "front": "AND gate output?", "back": "1 only when every input is 1." },
+    { "course": "Electronic equipment and troubleshooting", "front": "NAND gate output?", "back": "0 only when every input is 1; otherwise 1." },
+    { "course": "Electronic equipment and troubleshooting", "front": "Binary 1010 in decimal?", "back": "10." },
+    { "course": "Electronic equipment and troubleshooting", "front": "An inverter converts {{c1::DC}} to {{c2::AC}}.", "back": "" },
+    { "course": "Electronic equipment and troubleshooting", "front": "What is half-splitting?", "back": "Testing at the midpoint of a circuit to learn which half holds the fault, then repeating on that half." },
+    { "course": "Electronic equipment and troubleshooting", "front": "What protects circuit boards from static when you handle them?", "back": "A grounded wrist strap and anti-static bags or mats." },
+    { "course": "Electronic equipment and troubleshooting", "front": "What does an oscilloscope show that a multimeter cannot?", "back": "Voltage over time: waveform shape, frequency and noise." },
+    { "course": "Electronic equipment and troubleshooting", "front": "Diode test reads a value one way and OL both ways. Good or bad?", "back": "Bad. OL both ways means the diode is open." },
+
+    { "course": "Mechanical equipment and principles", "front": "Mechanical advantage of a lever?", "back": "Effort arm ÷ load arm." },
+    { "course": "Mechanical equipment and principles", "front": "50 lb applied 2 ft from a bolt: torque?", "back": "100 lb-ft." },
+    { "course": "Mechanical equipment and principles", "front": "A 20-tooth gear drives a 60-tooth gear. Speed and torque of the driven gear?", "back": "One third the speed, three times the torque." },
+    { "course": "Mechanical equipment and principles", "front": "Two meshing gears turn in {{c1::opposite}} directions.", "back": "" },
+    { "course": "Mechanical equipment and principles", "front": "A 4 in pulley at 1,800 rpm drives a 12 in pulley. Its speed?", "back": "600 rpm (4 × 1,800 = 12 × N)." },
+    { "course": "Mechanical equipment and principles", "front": "Which bearing type takes both radial and thrust loads?", "back": "The tapered roller bearing." },
+    { "course": "Mechanical equipment and principles", "front": "Can too much grease harm a bearing?", "back": "Yes. Over-greasing causes churning and overheating." },
+    { "course": "Mechanical equipment and principles", "front": "Coarse or fine thread for better resistance to vibration loosening?", "back": "Fine (UNF)." },
+    { "course": "Mechanical equipment and principles", "front": "Name three ways to lock a fastener.", "back": "Lock washer, lock nut, cotter pin or safety wire." },
+    { "course": "Mechanical equipment and principles", "front": "What causes flat spots on a railcar wheel?", "back": "The wheel locking and sliding along the rail." },
+    { "course": "Mechanical equipment and principles", "front": "Primary vs secondary suspension?", "back": "Primary: between axle journals and truck frame. Secondary: between truck and car body." },
+    { "course": "Mechanical equipment and principles", "front": "Where does refrigerant absorb heat from the car's air?", "back": "In the evaporator." },
+    { "course": "Mechanical equipment and principles", "front": "Refrigeration cycle order?", "back": "Compressor, condenser, expansion device, evaporator, back to compressor." },
+
+    { "course": "Pneumatic equipment and air brakes", "front": "Force from 100 psi on a 10 sq in piston?", "back": "1,000 lb (force = pressure × area)." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Pascal's law?", "back": "Pressure in a confined fluid acts equally in all directions." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Boyle's law (constant temperature)?", "back": "P1 × V1 = P2 × V2 — halve the volume, double the absolute pressure." },
+    { "course": "Pneumatic equipment and air brakes", "front": "What starts and stops the air compressor?", "back": "The governor or pressure switch, at the cut-in and cut-out pressures." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Why drain reservoirs and use air dryers?", "back": "Moisture causes corrosion, freezing and sticking valves." },
+    { "course": "Pneumatic equipment and air brakes", "front": "What protects a reservoir from too much pressure?", "back": "The safety (relief) valve." },
+    { "course": "Pneumatic equipment and air brakes", "front": "What does a check valve do?", "back": "Lets air flow one way only." },
+    { "course": "Pneumatic equipment and air brakes", "front": "A 3/2 valve has how many ports and positions?", "back": "3 ports, 2 positions." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Automatic air brake: what applies the brakes?", "back": "A reduction in brake pipe pressure." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Why is the automatic air brake fail-safe?", "back": "A parted train or burst hose drops brake pipe pressure, which applies the brakes in emergency." },
+    { "course": "Pneumatic equipment and air brakes", "front": "What does a slack adjuster do?", "back": "Takes up clearance as brake shoes wear, keeping piston travel within limits." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Simple way to find a small air leak at a fitting?", "back": "Brush on soapy water and look for bubbles." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Before disconnecting an air line or removing a valve, you must?", "back": "Bleed off the pressure." },
+    { "course": "Pneumatic equipment and air brakes", "front": "Single-acting vs double-acting cylinder?", "back": "Single: powered one way, spring return. Double: air powers both strokes." },
+
+    { "course": "Schematics, manuals and drawings", "front": "In what state does a schematic show contacts?", "back": "De-energized (normal, shelf) state." },
+    { "course": "Schematics, manuals and drawings", "front": "Ladder diagram: what are the rails and the rungs?", "back": "Rails: the power supply. Rungs: individual circuits, output on the right." },
+    { "course": "Schematics, manuals and drawings", "front": "Contacts in series act as {{c1::AND}}; contacts in parallel act as {{c2::OR}}.", "back": "" },
+    { "course": "Schematics, manuals and drawings", "front": "What is a seal-in (holding) contact?", "back": "A contact of the coil's own relay, parallel to the start button, that keeps the coil energized after the button is released." },
+    { "course": "Schematics, manuals and drawings", "front": "What do wire numbers and terminal designations let you do?", "back": "Follow a wire across drawing sheets and find it on the equipment." },
+    { "course": "Schematics, manuals and drawings", "front": "Fluid power symbol: hollow triangle vs solid triangle?", "back": "Hollow: pneumatic. Solid: hydraulic." },
+    { "course": "Schematics, manuals and drawings", "front": "Drawing lines: dashed? Long-short chain?", "back": "Dashed: hidden edges. Long-short chain: centre lines." },
+    { "course": "Schematics, manuals and drawings", "front": "Dimension 1.500 ± 0.005 in: acceptable range?", "back": "1.495 to 1.505 in." },
+    { "course": "Schematics, manuals and drawings", "front": "Drawing scale 1:2 means?", "back": "The drawing is half full size. Use the stated dimensions, never measure the print." },
+    { "course": "Schematics, manuals and drawings", "front": "Warning vs caution in a manual?", "back": "A warning protects people; a caution protects equipment." },
+    { "course": "Schematics, manuals and drawings", "front": "Three standard orthographic views?", "back": "Front, top and right side." }
+  ],
+  "notes": [
+    {
+      "title": "Roadmap",
+      "body": "# Roadmap to exam 7612\n\nAbout 10 hours a week from 8 Nov 2026. Week 0 is the week you import this plan.\n\n| Week | Focus |\n|---|---|\n| 0 | Read the notice. Check your experience. Start shop safety and measurement. |\n| 1 | Create the OASys account and apply. Start electrical: Ohm's law, series and parallel. |\n| 2 | **Final Submit the Education and Experience Exam before 28 Nov.** Finish safety. Electrical: meters, opens and shorts. |\n| 3 | Electrical: AC, relays, motors. Start electronics. |\n| 4 | Finish electrical. Electronics: diodes, transistors. Start mechanical. |\n| 5 | Electronics: logic, troubleshooting. Mechanical: gears, bearings. Start pneumatics. |\n| 6 | Finish electronics. Pneumatics: supply, valves. Start schematics. |\n| 7 | Finish mechanical. Air brakes. Schematics: symbols, tracing. |\n| 8 | Finish pneumatics. Ladder logic, drawings. First practice set and error log. |\n| 9 | Finish schematics. Practice by area. Start practical drills. |\n| 10 | Full timed practice test. Weak areas. Print the Admission Letter. **Test from Sat 23 Jan 2027.** |\n| 11–12 | Practical skills drills until your practical test date. |\n\nEvery day: clear the flashcard queue on Review (10–15 minutes).",
+      "tags": ["plan"]
+    },
+    {
+      "title": "Exam day",
+      "body": "# Exam 7612 at a glance\n\n- **Apply:** 1–28 Nov 2026 in OASys. Fee $91 (2.95% card fee). Fee waiver papers by 14 Dec 2026.\n- **Education and Experience Exam:** Final Submit by midnight ET, 28 Nov 2026.\n- **Multiple-choice test:** qualifying, 65% to pass, expected from Sat 23 Jan 2027, on computer or paper.\n- **Practical skills test:** competitive, 65% to pass; your score here sets your list number.\n- **Test areas:** electrical, electronic, mechanical and pneumatic equipment, and schematics — all with safe work practices.\n- **Admission Letter:** on your OASys dashboard 14 days before testing. Print it; it is your ticket.\n- **Bring:** one valid photo and signature ID in the name you applied under; a four-function calculator.\n- **Do not bring:** phones, smart watches, smart glasses or any other electronic device. Leave as soon as you finish.\n- **After appointment:** medical exam, drug screening, training course and probation.\n\nSource: Notice of Examination No. 7612, https://www.mta.info/document/226241",
+      "tags": ["exam"]
+    },
+    {
+      "title": "How to use a practice-question book",
+      "body": "# Using a practice-question book\n\nA published Car Inspector study guide is a bank of practice questions with answers. Use it to test yourself, not as a textbook:\n\n1. Study a topic from its study guide note first.\n2. Answer a block of questions timed, without looking at the key.\n3. Mark each miss in the error log by test area and cause.\n4. Re-study the topic, then make a flashcard in your own words for the fact you missed.\n\nDo not copy the book's questions into Vidya; write cards in your own words.",
+      "tags": ["method"]
+    }
+  ]
+}

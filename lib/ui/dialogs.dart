@@ -66,7 +66,7 @@ Future<void> addCourseDialog(BuildContext context, WidgetRef ref, {String? progr
     fields: (setState) => [
       Field(title, 'Title', autofocus: true),
       Choice(label: 'Kind', value: kind, options: courseKinds, onChanged: (v) => setState(() => kind = v)),
-      Field(provider, 'Provider', hint: 'Coursera, a book, your own'),
+      Field(provider, 'Provider', hint: 'A course site, a book, your own'),
       Field(url, 'Link'),
       Field(hours, 'Estimated hours', number: true),
       DatePick(label: 'Due', value: due, onChanged: (d) => setState(() => due = d)),
