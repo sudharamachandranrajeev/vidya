@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (2026-11-10)
+
+- Windows: the installer has its own id. Before, it shared one with other Brahma apps, so Windows could install it into another app's folder and replace its Start menu shortcut. Install this version to move it to its own folder; your data is not touched.
+
 ## 0.3.0 (2026-11-08)
 
 - Learn: import a whole study plan. Copy the in-app prompt into any AI chat, paste the reply (or
