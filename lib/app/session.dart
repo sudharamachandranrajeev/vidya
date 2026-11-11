@@ -8,7 +8,7 @@ const vidyaIdentity = AppIdentity(
   id: 'vidya',
   name: 'Vidya',
   androidPackage: 'dev.brahma.vidya',
-  releases: 'sudharamachandranrajeev/vidya',
+  releases: 'sudharamachandranrajeev/vidya-learning-manager',
 );
 
 /// Everything a running app needs: keys, the encrypted database and the
